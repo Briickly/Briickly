@@ -1,3 +1,18 @@
+#### Connect to DB
+npm i mongoose
+npm i dotenv
+
+add MONGO url in .env
+add .env to .gitignore
+
+
+
+
+
+
+
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
