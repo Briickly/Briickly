@@ -1,5 +1,12 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body{
+<<<<<<< HEAD
     background-color: grey;
+=======
+    background-color: rgb(241, 245, 241);
+>>>>>>> 92d1cbbc918ddd094e021e09daf73b74daa33672
 }
