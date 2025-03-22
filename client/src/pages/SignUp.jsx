@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import OAuth from '../components/OAuth';
 
 export default function signup() {
   const [formData, setFormData]
@@ -55,6 +56,7 @@ const handleSubmit= async (e)=>{
         <input type="text" placeholder='Email' className='border p-3 rounded-lg ' id='email' onChange={handleChange}/>
         <input type="text" placeholder='Password' className='border p-3 rounded-lg ' id='password' onChange={handleChange}/>
         <button disabled={loading } className='bg-blue-600 text-amber-50 p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>{loading? 'Loading...': 'Sign Up'}</button>
+        <OAuth/>
       </form>
 
       
