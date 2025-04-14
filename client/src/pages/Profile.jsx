@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-
+import { updateUserFailure,updateUserStart,updateUserSuccess } from '../redux/user/userSlice';
+import { useDispatch } from 'react-redux';
 export default function Profile() {
   const fileRef = useRef(null);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser,loading, error } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
   const [filePerc, steFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
@@ -45,11 +46,32 @@ export default function Profile() {
       steFilePerc(0);
     }
   };
-
+  const handleSubmit = async(e) =>{
+    e.preventDefault();
+    try{
+        dispatch(updateUserStart());
+        const res = await fetch(`/api/user/update/${currentUser._id}`,{
+            method: 'POST',
+            handlers: {
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+        const data = await res.json();
+        if(data.success == false){
+            dispatch(updateUserFailure(data.message));
+            return;
+        }
+        dispatch(updateUserSuccess(data));
+    }
+    catch(error){
+        dispatch(updateUserFailure(error.message));
+    }
+  };
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
-      <form className='flex flex-col gap-4'>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <input
           onChange={(e) => setFile(e.target.files[0])}
           type="file"
@@ -83,15 +105,17 @@ export default function Profile() {
           type="text"
           placeholder="username"
           id="username"
+          defaultValue={currentUser.username}
           className="border p-3 rounded-lg"
           value={formData.username}
           onChange={(e) => setFormData({ ...formData, username: e.target.value })}
         />
 
         <input
-          type="text"
+          type= "password"
           placeholder="email"
           id="email"
+          defaultValue={currentUser.email}
           className="border p-3 rounded-lg"
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -104,8 +128,8 @@ export default function Profile() {
           className="border p-3 rounded-lg"
         />
 
-        <button className="bg-slate-500 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80">
-          Update
+        <button disabled = {loading} className="bg-slate-500 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80">
+          {loading? 'loading...' : 'Update'}
         </button>
       </form>
 
