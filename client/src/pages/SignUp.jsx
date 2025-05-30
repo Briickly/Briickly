@@ -62,7 +62,7 @@ const handleSubmit= async (e)=>{
       
     <div className='flex gap-2 mt-5'>
       <p>Have an account?</p>
-      <Link to={"/sig-in"}>
+      <Link to={"/sign-in"}>
         <span className='text-blue-500'>Sign in</span>
       </Link>
     </div>
