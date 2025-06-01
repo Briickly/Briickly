@@ -2,7 +2,6 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState,useEffect } from 'react';
 import ListingItem from '../components/ListingItem';
-import { url } from 'inspector';
 export default function Search() {
     const navigate = useNavigate();
     const [sidebardata, setSidebardata] = useState({
