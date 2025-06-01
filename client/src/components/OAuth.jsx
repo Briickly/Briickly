@@ -3,6 +3,8 @@ import { app } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { FcGoogle } from 'react-icons/fc';
+
 export default function OAuth() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,6 +29,13 @@ export default function OAuth() {
     }
   };
   return (
-    <button onClick = {handleGoogleClick} type = 'button' className = 'bg-red-700 text-white p-3 rounded-lg-uppercase hover:opacity-95'>Continue with Google</button>
+    <button
+  onClick={handleGoogleClick}
+  type="button"
+  className="flex items-center justify-center gap-3 bg-white text-gray-700 font-semibold px-5 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 border border-gray-300"
+>
+  <FcGoogle size={24} />
+  Continue with Google
+</button>
   )
 }
