@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+"use client"
 
+import { useState, useRef, useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import {
   updateUserFailure,
   updateUserStart,
@@ -9,318 +10,844 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   signOut,
-} from '../redux/user/userSlice';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+} from "../redux/user/userSlice"
+import { useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
+import {
+  User,
+  Camera,
+  LogOut,
+  Trash2,
+  Plus,
+  Home,
+  Edit3,
+  AlertCircle,
+  CheckCircle,
+  Loader2,
+  Shield,
+} from "lucide-react"
 
 export default function Profile() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const fileRef = useRef(null);
-  const { currentUser, loading, error } = useSelector((state) => state.user);
-  const [file, setFile] = useState(undefined);
-  const [filePerc, setFilePerc] = useState(0);
-  const [fileUploadError, setFileUploadError] = useState(false);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const fileRef = useRef(null)
+  const { currentUser, loading, error } = useSelector((state) => state.user)
+  const [file, setFile] = useState(undefined)
+  const [filePerc, setFilePerc] = useState(0)
+  const [fileUploadError, setFileUploadError] = useState(false)
   const [formData, setFormData] = useState({
-    username: currentUser?.username || '',
-    email: currentUser?.email || '',
-    avatar: currentUser?.avatar || '',
-    password: '',
-  });
-  const [showListingsError, setShowListingsError] = useState(false);
-  const [userListings, setUserListings] = useState([]);
+    username: currentUser?.username || "",
+    email: currentUser?.email || "",
+    avatar: currentUser?.avatar || "",
+    password: "",
+  })
+  const [showListingsError, setShowListingsError] = useState(false)
+  const [userListings, setUserListings] = useState([])
+  const [showListings, setShowListings] = useState(false)
+  const [activeTab, setActiveTab] = useState("profile")
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   useEffect(() => {
     if (!currentUser) {
-      navigate('/sign-in', { replace: true });
+      navigate("/sign-in", { replace: true })
     }
-  }, [currentUser, navigate]);
+  }, [currentUser, navigate])
 
   useEffect(() => {
     if (file) {
-      handleFileUpload(file);
+      handleFileUpload(file)
     }
-  }, [file]);
+  }, [file])
 
   const handleFileUpload = async (file) => {
-    const formDataUpload = new FormData();
-    formDataUpload.append('file', file);
-    formDataUpload.append('upload_preset', 'my_unsigned');
+    const formDataUpload = new FormData()
+    formDataUpload.append("file", file)
+    formDataUpload.append("upload_preset", "my_unsigned")
 
     try {
-      const res = await fetch('https://api.cloudinary.com/v1_1/duvqbiq0s/image/upload', {
-        method: 'POST',
+      const res = await fetch("https://api.cloudinary.com/v1_1/duvqbiq0s/image/upload", {
+        method: "POST",
         body: formDataUpload,
-      });
+      })
 
-      const data = await res.json();
+      const data = await res.json()
 
       if (data.secure_url) {
-        setFormData((prev) => ({ ...prev, avatar: data.secure_url }));
-        setFilePerc(100);
-        setFileUploadError(false);
+        setFormData((prev) => ({ ...prev, avatar: data.secure_url }))
+        setFilePerc(100)
+        setFileUploadError(false)
       } else {
-        throw new Error(data.error?.message || 'Image upload failed');
+        throw new Error(data.error?.message || "Image upload failed")
       }
     } catch (error) {
-      console.error('Upload error:', error);
-      setFileUploadError(true);
-      setFilePerc(0);
+      console.error("Upload error:", error)
+      setFileUploadError(true)
+      setFilePerc(0)
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!currentUser || !currentUser._id) {
-      dispatch(updateUserFailure('User not authenticated'));
-      return;
+      dispatch(updateUserFailure("User not authenticated"))
+      return
     }
     try {
-      dispatch(updateUserStart());
+      dispatch(updateUserStart())
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify(formData),
-      });
-      const data = await res.json();
+      })
+      const data = await res.json()
       if (data.success === false) {
-        dispatch(updateUserFailure(data.message));
-        return;
+        dispatch(updateUserFailure(data.message))
+        return
       }
-      dispatch(updateUserSuccess(data));
+      dispatch(updateUserSuccess(data))
     } catch (error) {
-      dispatch(updateUserFailure(error.message));
+      dispatch(updateUserFailure(error.message))
     }
-  };
+  }
 
   const handleDeleteUser = async () => {
     if (!currentUser || !currentUser._id) {
-      dispatch(deleteUserFailure('User not authenticated'));
-      navigate('/sign-in', { replace: true });
-      return;
+      dispatch(deleteUserFailure("User not authenticated"))
+      navigate("/sign-in", { replace: true })
+      return
     }
     try {
-      dispatch(deleteUserStart());
+      dispatch(deleteUserStart())
       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+        method: "DELETE",
+        credentials: "include",
+      })
       if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`HTTP error! Status: ${res.status}, Message: ${text}`);
+        const text = await res.text()
+        throw new Error(`HTTP error! Status: ${res.status}, Message: ${text}`)
       }
-      const contentType = res.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        const data = await res.json();
+      const contentType = res.headers.get("content-type")
+      if (contentType && contentType.includes("application/json")) {
+        const data = await res.json()
         if (data.success === false) {
-          dispatch(deleteUserFailure(data.message));
-          return;
+          dispatch(deleteUserFailure(data.message))
+          return
         }
       }
-      dispatch(deleteUserSuccess());
-      navigate('/sign-in', { replace: true });
+      dispatch(deleteUserSuccess())
+      navigate("/sign-in", { replace: true })
     } catch (error) {
-      dispatch(deleteUserFailure(error.message));
-      navigate('/sign-in', { replace: true });
+      dispatch(deleteUserFailure(error.message))
+      navigate("/sign-in", { replace: true })
     }
-  };
+  }
 
   const handleSignOut = async () => {
     try {
-      const res = await fetch('/api/auth/signout', {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await fetch("/api/auth/signout", {
+        method: "POST",
+        credentials: "include",
+      })
       if (!res.ok) {
-        throw new Error(`Sign out failed: ${res.status}`);
+        throw new Error(`Sign out failed: ${res.status}`)
       }
-      dispatch(signOut()); // Use the correct signOut action
-      navigate('/sign-in', { replace: true }); // Fixed typo in path
+      dispatch(signOut())
+      navigate("/sign-in", { replace: true })
     } catch (error) {
-      console.error('Sign out failed:', error);
-      dispatch(signOut()); // Clear state even on error
-      navigate('/sign-in', { replace: true });
+      console.error("Sign out failed:", error)
+      dispatch(signOut())
+      navigate("/sign-in", { replace: true })
     }
-  };
+  }
 
   const handleShowListings = async () => {
     try {
-      setShowListingsError(false);
-      const res = await fetch(`/api/user/listings/${currentUser._id}`);
-      const data = await res.json();
+      setShowListingsError(false)
+      const res = await fetch(`/api/user/listings/${currentUser._id}`)
+      const data = await res.json()
       if (data.success === false) {
-        setShowListingsError(true);
-        return;
+        setShowListingsError(true)
+        return
       }
 
-      setUserListings(data);
+      setUserListings(data)
+      setShowListings(true)
+      setActiveTab("listings")
     } catch (error) {
-      setShowListingsError(true);
+      setShowListingsError(true)
     }
-  };
+  }
 
   const handleListingDelete = async (listingId) => {
     try {
       const res = await fetch(`/api/listing/delete/${listingId}`, {
-        method: 'DELETE',
-      });
-      const data = await res.json();
+        method: "DELETE",
+      })
+      const data = await res.json()
       if (data.success === false) {
-        console.log(data.message);
-        return;
+        console.log(data.message)
+        return
       }
 
-      setUserListings((prev) =>
-        prev.filter((listing) => listing._id !== listingId)
-      );
+      setUserListings((prev) => prev.filter((listing) => listing._id !== listingId))
     } catch (error) {
-      console.log(error.message);
+      console.log(error.message)
     }
-  };
+  }
 
   return (
-    <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          onChange={(e) => setFile(e.target.files[0])}
-          type="file"
-          ref={fileRef}
-          hidden
-          accept="image/*"
-        />
-
-        {formData.avatar && (
-          <img
-            onClick={() => fileRef.current.click()}
-            src={formData.avatar}
-            alt="profile"
-            className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2"
-          />
-        )}
-
-        <p className="text-sm self-center">
-          {fileUploadError ? (
-            <span className="text-red-700">
-              Error Image Upload (image size must be less than 10MB)
-            </span>
-          ) : filePerc > 0 && filePerc < 100 ? (
-            <span className="text-slate-700">Uploading {filePerc}%</span>
-          ) : filePerc === 100 ? (
-            <span className="text-green-700">Image Successfully Uploaded</span>
-          ) : (
-            ''
-          )}
-        </p>
-
-        <input
-          type="text"
-          placeholder="username"
-          id="username"
-          defaultValue={currentUser?.username}
-          className="border p-3 rounded-lg"
-          value={formData.username}
-          onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-        />
-
-        <input
-          type="email"
-          placeholder="email"
-          id="email"
-          defaultValue={currentUser?.email}
-          className="border p-3 rounded-lg"
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        />
-
-        <input
-          type="password"
-          placeholder="password"
-          id="password"
-          className="border p-3 rounded-lg"
-          value={formData.password}
-          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-        />
-
-        <button
-          disabled={loading}
-          className="bg-slate-500 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
-        >
-          {loading ? 'Loading...' : 'Update'}
-        </button>
-        <Link 
-          className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95' 
-          to={"/create-listing"}
-        >
-          Create Listing
-        </Link>
-      </form>
-
-      {error && <p className="text-red-700 text-sm mt-2">{error}</p>}
-
-      <div className="flex justify-between mt-5">
-        <span onClick={handleDeleteUser} className="text-red-800 cursor-pointer">
-          Delete Account
-        </span>
-        <span onClick={handleSignOut} className="text-red-800 cursor-pointer">
-          Sign Out
-        </span>
-      </div>
-
-      {/* <p className='text-red-700 mt-5'>{error ? error : ''}</p>
-      <p className='text-green-700 mt-5'>
-        {updateSuccess ? 'User is updated successfully!' : ''}
-      </p> */}
-
-      <button onClick={handleShowListings} className='text-green-700 w-full'>
-        Show Listings
-      </button>
-      <p className='text-red-700 mt-5'>
-        {showListingsError ? 'Error showing listings' : ''}
-      </p>
-
-      {userListings &&
-        userListings.length > 0 &&
-        <div className="flex flex-col gap-4">
-          <h1 className='text-center mt-7 text-2xl font-semibold'>Your Listings</h1>
-          {userListings.map((listing) => (
-            <div
-              key={listing._id}
-              className='border rounded-lg p-3 flex justify-between items-center gap-4'
-            >
-              <Link to={`/listing/${listing._id}`}>
-                <img
-                  src={listing.imageUrls[0]}
-                  alt='listing cover'
-                  className='h-16 w-16 object-contain'
-                />
-              </Link>
-              <Link
-                className='text-slate-700 font-semibold  hover:underline truncate flex-1'
-                to={`/listing/${listing._id}`}
-              >
-                <p>{listing.name}</p>
-              </Link>
-  
-              <div className='flex flex-col item-center'>
-                <button
-                  onClick={() => handleListingDelete(listing._id)}
-                  className='text-red-700 uppercase'
+    <div className="min-h-screen bg-slate-50 py-10">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          {/* Profile Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-8 text-white">
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="relative">
+                <div
+                  onClick={() => fileRef.current.click()}
+                  className="h-28 w-28 rounded-full bg-white/20 flex items-center justify-center cursor-pointer overflow-hidden border-4 border-white/30 hover:border-white/50 transition-all"
                 >
-                  Delete
+                  {formData.avatar ? (
+                    <img
+                      src={formData.avatar || "/placeholder.svg"}
+                      alt="profile"
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <User className="h-14 w-14 text-white/70" />
+                  )}
+                </div>
+                <div className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-slate-100 transition-colors">
+                  <Camera className="h-4 w-4 text-blue-600" />
+                </div>
+                <input onChange={(e) => setFile(e.target.files[0])} type="file" ref={fileRef} hidden accept="image/*" />
+              </div>
+              <div className="text-center md:text-left">
+                <h1 className="text-3xl font-bold">{currentUser?.username || "User"}</h1>
+                <p className="text-blue-100">{currentUser?.email}</p>
+                {fileUploadError ? (
+                  <div className="flex items-center gap-2 mt-2 bg-red-500/20 text-white px-3 py-1 rounded-full text-sm">
+                    <AlertCircle className="h-4 w-4" />
+                    <span>Upload failed (image must be less than 10MB)</span>
+                  </div>
+                ) : filePerc > 0 && filePerc < 100 ? (
+                  <div className="flex items-center gap-2 mt-2 bg-blue-500/20 text-white px-3 py-1 rounded-full text-sm">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Uploading {filePerc}%</span>
+                  </div>
+                ) : filePerc === 100 ? (
+                  <div className="flex items-center gap-2 mt-2 bg-green-500/20 text-white px-3 py-1 rounded-full text-sm">
+                    <CheckCircle className="h-4 w-4" />
+                    <span>Image uploaded successfully</span>
+                  </div>
+                ) : null}
+              </div>
+              <div className="md:ml-auto flex gap-3">
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center gap-2 bg-white/10 hover:bg-white/20 transition-colors px-4 py-2 rounded-lg text-sm font-medium"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sign Out
                 </button>
-                <Link to={`/update-listing/${listing._id}`}>
-                  <button className='text-green-700 uppercase'>Edit</button>
+                <Link
+                  to="/create-listing"
+                  className="flex items-center gap-2 bg-white text-blue-600 hover:bg-blue-50 transition-colors px-4 py-2 rounded-lg text-sm font-medium"
+                >
+                  <Plus className="h-4 w-4" />
+                  Create Listing
                 </Link>
               </div>
             </div>
-          ))}
-        </div>}
+          </div>
+
+          {/* Tab Navigation */}
+          <div className="border-b">
+            <div className="flex overflow-x-auto">
+              <button
+                onClick={() => setActiveTab("profile")}
+                className={`px-6 py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors ${
+                  activeTab === "profile"
+                    ? "border-blue-600 text-blue-600"
+                    : "border-transparent text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <User className="h-4 w-4" />
+                Profile
+              </button>
+              <button
+                onClick={() => {
+                  handleShowListings()
+                  setActiveTab("listings")
+                }}
+                className={`px-6 py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors ${
+                  activeTab === "listings"
+                    ? "border-blue-600 text-blue-600"
+                    : "border-transparent text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <Home className="h-4 w-4" />
+                My Listings
+              </button>
+              <button
+                onClick={() => setActiveTab("security")}
+                className={`px-6 py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors ${
+                  activeTab === "security"
+                    ? "border-blue-600 text-blue-600"
+                    : "border-transparent text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <Shield className="h-4 w-4" />
+                Security
+              </button>
+            </div>
+          </div>
+
+          {/* Content Area */}
+          <div className="p-6">
+            {activeTab === "profile" && (
+              <div className="max-w-2xl mx-auto">
+                <h2 className="text-2xl font-semibold mb-6 text-slate-800">Profile Information</h2>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="username" className="block text-sm font-medium text-slate-700 mb-1">
+                        Username
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Username"
+                        id="username"
+                        value={formData.username}
+                        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="Email"
+                        id="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+                        Password
+                      </label>
+                      <input
+                        type="password"
+                        placeholder="Password (leave empty to keep current)"
+                        id="password"
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  {error && (
+                    <div className="bg-red-50 text-red-700 p-4 rounded-lg flex items-start gap-3">
+                      <AlertCircle className="h-5 w-5 mt-0.5" />
+                      <span>{error}</span>
+                    </div>
+                  )}
+
+                  <div className="flex justify-end">
+                    <button
+                      disabled={loading}
+                      type="submit"
+                      className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Updating...
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle className="h-4 w-4" />
+                          Update Profile
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+
+            {activeTab === "listings" && (
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-semibold text-slate-800">My Listings</h2>
+                  <Link
+                    to="/create-listing"
+                    className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add New Listing
+                  </Link>
+                </div>
+
+                {showListingsError ? (
+                  <div className="bg-red-50 text-red-700 p-4 rounded-lg flex items-start gap-3">
+                    <AlertCircle className="h-5 w-5 mt-0.5" />
+                    <span>Error loading listings. Please try again.</span>
+                  </div>
+                ) : userListings && userListings.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {userListings.map((listing) => (
+                      <div
+                        key={listing._id}
+                        className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                      >
+                        <div className="flex">
+                          <Link to={`/listing/${listing._id}`} className="w-1/3">
+                            <img
+                              src={listing.imageUrls[0] || "/placeholder.svg"}
+                              alt="listing cover"
+                              className="h-full w-full object-cover"
+                            />
+                          </Link>
+                          <div className="p-4 flex-1 flex flex-col">
+                            <Link
+                              className="text-slate-800 font-semibold text-lg hover:text-blue-600 transition-colors mb-2 line-clamp-1"
+                              to={`/listing/${listing._id}`}
+                            >
+                              {listing.name}
+                            </Link>
+                            <p className="text-slate-500 text-sm mb-3 line-clamp-2">{listing.description}</p>
+                            <div className="mt-auto flex items-center justify-between">
+                              <span className="text-blue-600 font-semibold">
+                                ${listing.regularPrice.toLocaleString()}
+                                {listing.type === "rent" && " / month"}
+                              </span>
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => handleListingDelete(listing._id)}
+                                  className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                  title="Delete listing"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                                <Link
+                                  to={`/update-listing/${listing._id}`}
+                                  className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                  title="Edit listing"
+                                >
+                                  <Edit3 className="h-4 w-4" />
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 bg-slate-50 rounded-lg">
+                    <Home className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+                    <h3 className="text-xl font-medium text-slate-700 mb-2">No listings yet</h3>
+                    <p className="text-slate-500 mb-6">Create your first property listing to get started</p>
+                    <Link
+                      to="/create-listing"
+                      className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Create Your First Listing
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === "security" && (
+              <div className="max-w-2xl mx-auto">
+                <h2 className="text-2xl font-semibold mb-6 text-slate-800">Account Security</h2>
+
+                <div className="space-y-6">
+                  <div className="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <h3 className="text-lg font-medium text-slate-800 mb-4">Danger Zone</h3>
+                    <p className="text-slate-600 mb-6">
+                      Permanently delete your account and all of your content. This action cannot be undone.
+                    </p>
+
+                    {showDeleteConfirm ? (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                        <h4 className="text-red-700 font-medium mb-2">Are you absolutely sure?</h4>
+                        <p className="text-red-600 text-sm mb-4">
+                          This will permanently delete your account, all your listings, and personal data. This action
+                          cannot be undone.
+                        </p>
+                        <div className="flex gap-3">
+                          <button
+                            onClick={handleDeleteUser}
+                            className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition-colors"
+                          >
+                            Yes, delete my account
+                          </button>
+                          <button
+                            onClick={() => setShowDeleteConfirm(false)}
+                            className="bg-white text-slate-700 border border-slate-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setShowDeleteConfirm(true)}
+                        className="flex items-center gap-2 bg-white border border-red-300 text-red-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        Delete Account
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
+
+
+// import React, { useState, useRef, useEffect } from 'react';
+// import { useSelector, useDispatch } from 'react-redux';
+
+// import {
+//   updateUserFailure,
+//   updateUserStart,
+//   updateUserSuccess,
+//   deleteUserFailure,
+//   deleteUserStart,
+//   deleteUserSuccess,
+//   signOut,
+// } from '../redux/user/userSlice';
+// import { useNavigate } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+
+// export default function Profile() {
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+//   const fileRef = useRef(null);
+//   const { currentUser, loading, error } = useSelector((state) => state.user);
+//   const [file, setFile] = useState(undefined);
+//   const [filePerc, setFilePerc] = useState(0);
+//   const [fileUploadError, setFileUploadError] = useState(false);
+//   const [formData, setFormData] = useState({
+//     username: currentUser?.username || '',
+//     email: currentUser?.email || '',
+//     avatar: currentUser?.avatar || '',
+//     password: '',
+//   });
+//   const [showListingsError, setShowListingsError] = useState(false);
+//   const [userListings, setUserListings] = useState([]);
+
+//   useEffect(() => {
+//     if (!currentUser) {
+//       navigate('/sign-in', { replace: true });
+//     }
+//   }, [currentUser, navigate]);
+
+//   useEffect(() => {
+//     if (file) {
+//       handleFileUpload(file);
+//     }
+//   }, [file]);
+
+//   const handleFileUpload = async (file) => {
+//     const formDataUpload = new FormData();
+//     formDataUpload.append('file', file);
+//     formDataUpload.append('upload_preset', 'my_unsigned');
+
+//     try {
+//       const res = await fetch('https://api.cloudinary.com/v1_1/duvqbiq0s/image/upload', {
+//         method: 'POST',
+//         body: formDataUpload,
+//       });
+
+//       const data = await res.json();
+
+//       if (data.secure_url) {
+//         setFormData((prev) => ({ ...prev, avatar: data.secure_url }));
+//         setFilePerc(100);
+//         setFileUploadError(false);
+//       } else {
+//         throw new Error(data.error?.message || 'Image upload failed');
+//       }
+//     } catch (error) {
+//       console.error('Upload error:', error);
+//       setFileUploadError(true);
+//       setFilePerc(0);
+//     }
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     if (!currentUser || !currentUser._id) {
+//       dispatch(updateUserFailure('User not authenticated'));
+//       return;
+//     }
+//     try {
+//       dispatch(updateUserStart());
+//       const res = await fetch(`/api/user/update/${currentUser._id}`, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         credentials: 'include',
+//         body: JSON.stringify(formData),
+//       });
+//       const data = await res.json();
+//       if (data.success === false) {
+//         dispatch(updateUserFailure(data.message));
+//         return;
+//       }
+//       dispatch(updateUserSuccess(data));
+//     } catch (error) {
+//       dispatch(updateUserFailure(error.message));
+//     }
+//   };
+
+//   const handleDeleteUser = async () => {
+//     if (!currentUser || !currentUser._id) {
+//       dispatch(deleteUserFailure('User not authenticated'));
+//       navigate('/sign-in', { replace: true });
+//       return;
+//     }
+//     try {
+//       dispatch(deleteUserStart());
+//       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+//         method: 'DELETE',
+//         credentials: 'include',
+//       });
+//       if (!res.ok) {
+//         const text = await res.text();
+//         throw new Error(`HTTP error! Status: ${res.status}, Message: ${text}`);
+//       }
+//       const contentType = res.headers.get('content-type');
+//       if (contentType && contentType.includes('application/json')) {
+//         const data = await res.json();
+//         if (data.success === false) {
+//           dispatch(deleteUserFailure(data.message));
+//           return;
+//         }
+//       }
+//       dispatch(deleteUserSuccess());
+//       navigate('/sign-in', { replace: true });
+//     } catch (error) {
+//       dispatch(deleteUserFailure(error.message));
+//       navigate('/sign-in', { replace: true });
+//     }
+//   };
+
+//   const handleSignOut = async () => {
+//     try {
+//       const res = await fetch('/api/auth/signout', {
+//         method: 'POST',
+//         credentials: 'include',
+//       });
+//       if (!res.ok) {
+//         throw new Error(`Sign out failed: ${res.status}`);
+//       }
+//       dispatch(signOut()); // Use the correct signOut action
+//       navigate('/sign-in', { replace: true }); // Fixed typo in path
+//     } catch (error) {
+//       console.error('Sign out failed:', error);
+//       dispatch(signOut()); // Clear state even on error
+//       navigate('/sign-in', { replace: true });
+//     }
+//   };
+
+//   const handleShowListings = async () => {
+//     try {
+//       setShowListingsError(false);
+//       const res = await fetch(`/api/user/listings/${currentUser._id}`);
+//       const data = await res.json();
+//       if (data.success === false) {
+//         setShowListingsError(true);
+//         return;
+//       }
+
+//       setUserListings(data);
+//     } catch (error) {
+//       setShowListingsError(true);
+//     }
+//   };
+
+//   const handleListingDelete = async (listingId) => {
+//     try {
+//       const res = await fetch(`/api/listing/delete/${listingId}`, {
+//         method: 'DELETE',
+//       });
+//       const data = await res.json();
+//       if (data.success === false) {
+//         console.log(data.message);
+//         return;
+//       }
+
+//       setUserListings((prev) =>
+//         prev.filter((listing) => listing._id !== listingId)
+//       );
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   };
+
+//   return (
+//     <div className="p-3 max-w-lg mx-auto">
+//       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
+//       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+//         <input
+//           onChange={(e) => setFile(e.target.files[0])}
+//           type="file"
+//           ref={fileRef}
+//           hidden
+//           accept="image/*"
+//         />
+
+//         {formData.avatar && (
+//           <img
+//             onClick={() => fileRef.current.click()}
+//             src={formData.avatar}
+//             alt="profile"
+//             className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2"
+//           />
+//         )}
+
+//         <p className="text-sm self-center">
+//           {fileUploadError ? (
+//             <span className="text-red-700">
+//               Error Image Upload (image size must be less than 10MB)
+//             </span>
+//           ) : filePerc > 0 && filePerc < 100 ? (
+//             <span className="text-slate-700">Uploading {filePerc}%</span>
+//           ) : filePerc === 100 ? (
+//             <span className="text-green-700">Image Successfully Uploaded</span>
+//           ) : (
+//             ''
+//           )}
+//         </p>
+
+//         <input
+//           type="text"
+//           placeholder="username"
+//           id="username"
+//           defaultValue={currentUser?.username}
+//           className="border p-3 rounded-lg"
+//           value={formData.username}
+//           onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+//         />
+
+//         <input
+//           type="email"
+//           placeholder="email"
+//           id="email"
+//           defaultValue={currentUser?.email}
+//           className="border p-3 rounded-lg"
+//           value={formData.email}
+//           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+//         />
+
+//         <input
+//           type="password"
+//           placeholder="password"
+//           id="password"
+//           className="border p-3 rounded-lg"
+//           value={formData.password}
+//           onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+//         />
+
+//         <button
+//           disabled={loading}
+//           className="bg-slate-500 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
+//         >
+//           {loading ? 'Loading...' : 'Update'}
+//         </button>
+//         <Link 
+//           className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95' 
+//           to={"/create-listing"}
+//         >
+//           Create Listing
+//         </Link>
+//       </form>
+
+//       {error && <p className="text-red-700 text-sm mt-2">{error}</p>}
+
+//       <div className="flex justify-between mt-5">
+//         <span onClick={handleDeleteUser} className="text-red-800 cursor-pointer">
+//           Delete Account
+//         </span>
+//         <span onClick={handleSignOut} className="text-red-800 cursor-pointer">
+//           Sign Out
+//         </span>
+//       </div>
+
+//       {/* <p className='text-red-700 mt-5'>{error ? error : ''}</p>
+//       <p className='text-green-700 mt-5'>
+//         {updateSuccess ? 'User is updated successfully!' : ''}
+//       </p> */}
+
+//       <button onClick={handleShowListings} className='text-green-700 w-full'>
+//         Show Listings
+//       </button>
+//       <p className='text-red-700 mt-5'>
+//         {showListingsError ? 'Error showing listings' : ''}
+//       </p>
+
+//       {userListings &&
+//         userListings.length > 0 &&
+//         <div className="flex flex-col gap-4">
+//           <h1 className='text-center mt-7 text-2xl font-semibold'>Your Listings</h1>
+//           {userListings.map((listing) => (
+//             <div
+//               key={listing._id}
+//               className='border rounded-lg p-3 flex justify-between items-center gap-4'
+//             >
+//               <Link to={`/listing/${listing._id}`}>
+//                 <img
+//                   src={listing.imageUrls[0]}
+//                   alt='listing cover'
+//                   className='h-16 w-16 object-contain'
+//                 />
+//               </Link>
+//               <Link
+//                 className='text-slate-700 font-semibold  hover:underline truncate flex-1'
+//                 to={`/listing/${listing._id}`}
+//               >
+//                 <p>{listing.name}</p>
+//               </Link>
+  
+//               <div className='flex flex-col item-center'>
+//                 <button
+//                   onClick={() => handleListingDelete(listing._id)}
+//                   className='text-red-700 uppercase'
+//                 >
+//                   Delete
+//                 </button>
+//                 <Link to={`/update-listing/${listing._id}`}>
+//                   <button className='text-green-700 uppercase'>Edit</button>
+//                 </Link>
+//               </div>
+//             </div>
+//           ))}
+//         </div>}
+//     </div>
+//   );
+// }
 
 
