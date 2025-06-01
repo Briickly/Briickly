@@ -61,17 +61,17 @@ export default function HomePage() {
 
   const features = [
     {
-      icon: <Search className="w-8 h-8 text-blue-600" />,
+      icon: <Search className="w-8 h-8 text-pink-600" />,
       title: "Smart Search",
       description: "Find properties with our advanced AI-powered search filters",
     },
     {
-      icon: <Shield className="w-8 h-8 text-blue-600" />,
+      icon: <Shield className="w-8 h-8 text-pink-600" />,
       title: "Verified Listings",
       description: "All properties are verified and backed by reliable data",
     },
     {
-      icon: <TrendingUp className="w-8 h-8 text-blue-600" />,
+      icon: <TrendingUp className="w-8 h-8 text-pink-600" />,
       title: "Market Insights",
       description: "Get real-time market trends and property value analytics",
     },
@@ -81,15 +81,15 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Enhanced Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-indigo-600/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-600/10 to-indigo-600/10"></div>
         <div className="relative flex flex-col gap-8 py-20 lg:py-32 px-4 max-w-7xl mx-auto">
           <div className="text-center lg:text-left max-w-4xl mx-auto lg:mx-0">
-            <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 bg-pink-100 text-pink-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Home className="w-4 h-4" />
               Welcome to Briickly
             </div>
             <h1 className="text-slate-800 font-bold text-4xl lg:text-7xl leading-tight mb-6">
-              Find your next <span className="text-blue-600">perfect</span>
+              Find your next <span className="text-pink-600">perfect</span>
               <br />
               place with ease
             </h1>
@@ -100,7 +100,7 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
               <Link
                 to={"/search"}
-                className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center gap-2 bg-pink-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <Search className="w-5 h-5" />
                 Start Your Search
@@ -121,7 +121,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="text-center group">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-xl mb-4 group-hover:bg-blue-200 transition-colors">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-pink-100 rounded-xl mb-4 group-hover:bg-pink-200 transition-colors">
                   {stat.icon}
                 </div>
                 <div className="text-3xl font-bold text-slate-800 mb-2">{stat.number}</div>
@@ -195,7 +195,7 @@ export default function HomePage() {
                 <p className="text-slate-600">Limited time deals you don't want to miss</p>
               </div>
               <Link
-                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold group"
+                className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700 font-semibold group"
                 to={"/search?offer=true"}
               >
                 Show more offers
@@ -221,7 +221,7 @@ export default function HomePage() {
                 <p className="text-slate-600">Find your perfect rental home</p>
               </div>
               <Link
-                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold group"
+                className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700 font-semibold group"
                 to={"/search?type=rent"}
               >
                 Show more rentals
@@ -247,7 +247,7 @@ export default function HomePage() {
                 <p className="text-slate-600">Discover your dream home to buy</p>
               </div>
               <Link
-                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold group"
+                className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700 font-semibold group"
                 to={"/search?type=sale"}
               >
                 Show more properties
@@ -266,23 +266,23 @@ export default function HomePage() {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20">
+      <div className="bg-gradient-to-r from-pink-600 to-indigo-700 text-white py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-6">Ready to Find Your Dream Property?</h2>
-          <p className="text-xl mb-8 text-blue-100">
+          <p className="text-xl mb-8 text-pink-100">
             Join thousands of satisfied customers who found their perfect homes with Briickly
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/search"
-              className="inline-flex items-center gap-2 bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-slate-100 transition-colors"
+              className="inline-flex items-center gap-2 bg-white text-pink-600 px-8 py-4 rounded-xl font-semibold hover:bg-slate-100 transition-colors"
             >
               <Search className="w-5 h-5" />
               Start Searching
             </Link>
             <Link
               to="/about"
-              className="inline-flex items-center gap-2 border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+              className="inline-flex items-center gap-2 border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-pink-600 transition-colors"
             >
               Learn More
             </Link>
@@ -363,7 +363,7 @@ export default function HomePage() {
 //           Whether you're looking for a cozy apartment or a spacious house,
 //           we have something for everyone.
 //         </div>
-//         <Link to={"/search"} className='text-xs sm:text-sm text-blue-800 font-bold hover:underline'>
+//         <Link to={"/search"} className='text-xs sm:text-sm text-pink-800 font-bold hover:underline'>
 //           Let's get started
 //         </Link>
 //       </div>
@@ -386,7 +386,7 @@ export default function HomePage() {
 //           <div className="">
 //             <div className="my-3">
 //               <h2 className='text-2xl font-semibold text-slate-700'>Recent Offers</h2>
-//               <Link className='text-sm text-blue-800 hover:underline' to={'/search?offer=true'}>
+//               <Link className='text-sm text-pink-800 hover:underline' to={'/search?offer=true'}>
 //                 Show more offers
 //               </Link>
 //             </div>
@@ -404,7 +404,7 @@ export default function HomePage() {
 //           <div className="">
 //             <div className="my-3">
 //               <h2 className='text-2xl font-semibold text-slate-700'>Recent places for Rent</h2>
-//               <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=rent'}>
+//               <Link className='text-sm text-pink-800 hover:underline' to={'/search?type=rent'}>
 //                 Show more places for Rent
 //               </Link>
 //             </div>
@@ -422,7 +422,7 @@ export default function HomePage() {
 //           <div className="">
 //             <div className="my-3">
 //               <h2 className='text-2xl font-semibold text-slate-700'>Recent places for sale</h2>
-//               <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=sale'}>
+//               <Link className='text-sm text-pink-800 hover:underline' to={'/search?type=sale'}>
 //                 Show more places for sale
 //               </Link>
 //             </div>
