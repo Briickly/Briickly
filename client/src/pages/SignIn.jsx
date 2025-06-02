@@ -33,7 +33,6 @@ export default function SignIn() {
         body: JSON.stringify(formData),
       })
       const data = await res.json()
-      console.log(data)
       if (data.success === false) {
         dispatch(signInFailure(data.message))
         return
@@ -141,8 +140,10 @@ export default function SignIn() {
               </div>
             </div>
 
-            {/* OAuth */}
-            <OAuth />
+            {/* OAuth - Centered */}
+            <div className="flex justify-center w-full">
+              <OAuth />
+            </div>
           </form>
 
           {/* Sign Up Link */}
@@ -173,6 +174,7 @@ export default function SignIn() {
     </div>
   )
 }
+
 
 
 // import { useState } from 'react';
