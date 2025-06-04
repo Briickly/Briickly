@@ -222,6 +222,7 @@ export default function SignUp() {
           </div>
         </div>
 
+
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-sm text-slate-500">
