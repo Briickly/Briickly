@@ -1,14 +1,23 @@
 "use client"
 
 import { Link } from "react-router-dom"
-import { useState } from "react"
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/css/bundle"
 import SwiperCore from "swiper"
 import { Navigation } from "swiper/modules"
 import ListingItem from "../components/ListingItem"
-import { Search, Home, TrendingUp, Shield, Users, Star, MapPin, ArrowRight, Play } from "lucide-react"
+import {
+  Search,
+  Home,
+  TrendingUp,
+  Shield,
+  Users,
+  Star,
+  MapPin,
+  ArrowRight,
+  Play,
+} from "lucide-react"
 
 export default function HomePage() {
   const [offerListings, setOfferListings] = useState([])
@@ -79,7 +88,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      {/* Enhanced Hero Section */}
+      {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-pink-600/10 to-indigo-600/10"></div>
         <div className="relative flex flex-col gap-8 py-20 lg:py-32 px-4 max-w-7xl mx-auto">
@@ -115,7 +124,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Stats Section */}
+      {/* Stats */}
       <div className="py-16 bg-white border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
@@ -132,19 +141,19 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Enhanced Swiper Section */}
+      {/* Swiper Section */}
       <div className="relative">
-        <Swiper navigation modules={[Navigation]} className="h-[600px]">
+        <Swiper navigation modules={[Navigation]} className="min-h-[400px] lg:min-h-[600px]">
           {offerListings &&
             offerListings.length > 0 &&
             offerListings.map((listing) => (
               <SwiperSlide key={listing._id}>
                 <div
                   style={{
-                    background: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${listing.imageUrls[0]}) center no-repeat`,
+                    background: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${listing.imageUrls?.[0] || "/placeholder.jpg"}) center no-repeat`,
                     backgroundSize: "cover",
                   }}
-                  className="h-full relative flex items-center justify-center"
+                  className="w-full h-full min-h-[400px] flex items-center justify-center relative"
                 >
                   <div className="text-center text-white z-10">
                     <h3 className="text-4xl font-bold mb-4">Featured Properties</h3>
@@ -163,7 +172,7 @@ export default function HomePage() {
         </Swiper>
       </div>
 
-      {/* Features Section */}
+      {/* Features */}
       <div className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
@@ -184,88 +193,32 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Enhanced Listing Results */}
+      {/* Listing Sections */}
       <div className="max-w-7xl mx-auto px-4 py-20">
-        {/* Recent Offers */}
-        {offerListings && offerListings.length > 0 && (
+        {/* Offers */}
+        {offerListings.length > 0 && (
           <div className="mb-20">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-3xl font-bold text-slate-800 mb-2">🔥 Hot Offers</h2>
-                <p className="text-slate-600">Limited time deals you don't want to miss</p>
-              </div>
-              <Link
-                className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700 font-semibold group"
-                to={"/search?offer=true"}
-              >
-                Show more offers
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {offerListings.map((listing) => (
-                <div key={listing._id} className="group">
-                  <ListingItem listing={listing} />
-                </div>
-              ))}
-            </div>
+            <SectionHeader title="🔥 Hot Offers" description="Limited time deals you don't want to miss" link="/search?offer=true" />
+            <ListingGrid listings={offerListings} />
           </div>
         )}
-
-        {/* Rent Listings */}
-        {rentListings && rentListings.length > 0 && (
+        {/* Rent */}
+        {rentListings.length > 0 && (
           <div className="mb-20">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-3xl font-bold text-slate-800 mb-2">🏠 For Rent</h2>
-                <p className="text-slate-600">Find your perfect rental home</p>
-              </div>
-              <Link
-                className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700 font-semibold group"
-                to={"/search?type=rent"}
-              >
-                Show more rentals
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {rentListings.map((listing) => (
-                <div key={listing._id} className="group">
-                  <ListingItem listing={listing} />
-                </div>
-              ))}
-            </div>
+            <SectionHeader title="🏠 For Rent" description="Find your perfect rental home" link="/search?type=rent" />
+            <ListingGrid listings={rentListings} />
           </div>
         )}
-
-        {/* Sale Listings */}
-        {saleListings && saleListings.length > 0 && (
+        {/* Sale */}
+        {saleListings.length > 0 && (
           <div className="mb-20">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-3xl font-bold text-slate-800 mb-2">🏡 For Sale</h2>
-                <p className="text-slate-600">Discover your dream home to buy</p>
-              </div>
-              <Link
-                className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700 font-semibold group"
-                to={"/search?type=sale"}
-              >
-                Show more properties
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {saleListings.map((listing) => (
-                <div key={listing._id} className="group">
-                  <ListingItem listing={listing} />
-                </div>
-              ))}
-            </div>
+            <SectionHeader title="🏡 For Sale" description="Discover your dream home to buy" link="/search?type=sale" />
+            <ListingGrid listings={saleListings} />
           </div>
         )}
       </div>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <div className="bg-gradient-to-r from-pink-600 to-indigo-700 text-white py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-6">Ready to Find Your Dream Property?</h2>
@@ -292,6 +245,39 @@ export default function HomePage() {
     </div>
   )
 }
+
+function SectionHeader({ title, description, link }) {
+  return (
+    <div className="flex items-center justify-between mb-8">
+      <div>
+        <h2 className="text-3xl font-bold text-slate-800 mb-2">{title}</h2>
+        <p className="text-slate-600">{description}</p>
+      </div>
+      <Link
+        className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700 font-semibold group"
+        to={link}
+      >
+        Show more
+        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+      </Link>
+    </div>
+  )
+}
+
+// FINAL FIXED GRID: horizontal spacing (gap-x-8) and vertical spacing (gap-y-8)
+function ListingGrid({ listings }) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-28 gap-y-8">
+      {listings.map((listing) => (
+        <div key={listing._id} className="group">
+          <ListingItem listing={listing} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+
 
 
 
