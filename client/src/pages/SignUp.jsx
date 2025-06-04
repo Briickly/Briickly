@@ -206,7 +206,9 @@ export default function SignUp() {
             </div>
 
             {/* OAuth */}
-            <OAuth />
+            <div className="flex justify-center w-full">
+                <OAuth />
+              </div>
           </form>
 
           {/* Sign In Link */}
