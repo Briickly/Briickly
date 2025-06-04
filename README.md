@@ -1,7 +1,3 @@
-Your README content is well structured and clear. I made some small formatting fixes for better readability and consistency, especially for code blocks and spacing around commands. Here’s the refined version:
-
----
-
 # 🧱 Briickly - Modern Real Estate Platform
 
 *Briickly* is a modern full-stack real estate web application that connects property owners with potential buyers and renters. Built with the *MERN stack* (MongoDB, Express.js, React, Node.js), it features a responsive interface with a sleek dark theme and seamless user experience.
