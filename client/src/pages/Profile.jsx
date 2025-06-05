@@ -203,7 +203,7 @@ export default function Profile() {
       <div className="max-w-6xl mx-auto px-4">
         <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
           {/* Profile Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-8 text-white">
+          <div className="bg-gradient-to-r from-pink-600 to-indigo-700 p-8 text-white">
             <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="relative">
                 <div
@@ -221,20 +221,20 @@ export default function Profile() {
                   )}
                 </div>
                 <div className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-slate-100 transition-colors">
-                  <Camera className="h-4 w-4 text-blue-600" />
+                  <Camera className="h-4 w-4 text-pink-600" />
                 </div>
                 <input onChange={(e) => setFile(e.target.files[0])} type="file" ref={fileRef} hidden accept="image/*" />
               </div>
               <div className="text-center md:text-left">
                 <h1 className="text-3xl font-bold">{currentUser?.username || "User"}</h1>
-                <p className="text-blue-100">{currentUser?.email}</p>
+                <p className="text-pink-100">{currentUser?.email}</p>
                 {fileUploadError ? (
                   <div className="flex items-center gap-2 mt-2 bg-red-500/20 text-white px-3 py-1 rounded-full text-sm">
                     <AlertCircle className="h-4 w-4" />
                     <span>Upload failed (image must be less than 10MB)</span>
                   </div>
                 ) : filePerc > 0 && filePerc < 100 ? (
-                  <div className="flex items-center gap-2 mt-2 bg-blue-500/20 text-white px-3 py-1 rounded-full text-sm">
+                  <div className="flex items-center gap-2 mt-2 bg-pink-500/20 text-white px-3 py-1 rounded-full text-sm">
                     <Loader2 className="h-4 w-4 animate-spin" />
                     <span>Uploading {filePerc}%</span>
                   </div>
@@ -255,7 +255,7 @@ export default function Profile() {
                 </button>
                 <Link
                   to="/create-listing"
-                  className="flex items-center gap-2 bg-white text-blue-600 hover:bg-blue-50 transition-colors px-4 py-2 rounded-lg text-sm font-medium"
+                  className="flex items-center gap-2 bg-white text-pink-600 hover:bg-pink-50 transition-colors px-4 py-2 rounded-lg text-sm font-medium"
                 >
                   <Plus className="h-4 w-4" />
                   Create Listing
@@ -271,7 +271,7 @@ export default function Profile() {
                 onClick={() => setActiveTab("profile")}
                 className={`px-6 py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors ${
                   activeTab === "profile"
-                    ? "border-blue-600 text-blue-600"
+                    ? "border-pink-600 text-pink-600"
                     : "border-transparent text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -285,7 +285,7 @@ export default function Profile() {
                 }}
                 className={`px-6 py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors ${
                   activeTab === "listings"
-                    ? "border-blue-600 text-blue-600"
+                    ? "border-pink-600 text-pink-600"
                     : "border-transparent text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -296,7 +296,7 @@ export default function Profile() {
                 onClick={() => setActiveTab("security")}
                 className={`px-6 py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors ${
                   activeTab === "security"
-                    ? "border-blue-600 text-blue-600"
+                    ? "border-pink-600 text-pink-600"
                     : "border-transparent text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -323,7 +323,7 @@ export default function Profile() {
                         id="username"
                         value={formData.username}
                         onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                       />
                     </div>
 
@@ -337,7 +337,7 @@ export default function Profile() {
                         id="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                       />
                     </div>
 
@@ -351,7 +351,7 @@ export default function Profile() {
                         id="password"
                         value={formData.password}
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                       />
                     </div>
                   </div>
@@ -367,7 +367,7 @@ export default function Profile() {
                     <button
                       disabled={loading}
                       type="submit"
-                      className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
+                      className="bg-pink-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-pink-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
                     >
                       {loading ? (
                         <>
@@ -392,7 +392,7 @@ export default function Profile() {
                   <h2 className="text-2xl font-semibold text-slate-800">My Listings</h2>
                   <Link
                     to="/create-listing"
-                    className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                    className="flex items-center gap-2 bg-pink-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-pink-700 transition-colors"
                   >
                     <Plus className="h-4 w-4" />
                     Add New Listing
@@ -421,14 +421,14 @@ export default function Profile() {
                           </Link>
                           <div className="p-4 flex-1 flex flex-col">
                             <Link
-                              className="text-slate-800 font-semibold text-lg hover:text-blue-600 transition-colors mb-2 line-clamp-1"
+                              className="text-slate-800 font-semibold text-lg hover:text-pink-600 transition-colors mb-2 line-clamp-1"
                               to={`/listing/${listing._id}`}
                             >
                               {listing.name}
                             </Link>
                             <p className="text-slate-500 text-sm mb-3 line-clamp-2">{listing.description}</p>
                             <div className="mt-auto flex items-center justify-between">
-                              <span className="text-blue-600 font-semibold">
+                              <span className="text-pink-600 font-semibold">
                                 ${listing.regularPrice.toLocaleString()}
                                 {listing.type === "rent" && " / month"}
                               </span>
@@ -442,7 +442,7 @@ export default function Profile() {
                                 </button>
                                 <Link
                                   to={`/update-listing/${listing._id}`}
-                                  className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                  className="p-2 text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
                                   title="Edit listing"
                                 >
                                   <Edit3 className="h-4 w-4" />
@@ -461,7 +461,7 @@ export default function Profile() {
                     <p className="text-slate-500 mb-6">Create your first property listing to get started</p>
                     <Link
                       to="/create-listing"
-                      className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                      className="inline-flex items-center gap-2 bg-pink-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-pink-700 transition-colors"
                     >
                       <Plus className="h-4 w-4" />
                       Create Your First Listing

@@ -10,25 +10,25 @@ export default function About() {
 
   const values = [
     {
-      icon: <Shield className="w-8 h-8 text-blue-600" />,
+      icon: <Shield className="w-8 h-8 text-pink-600" />,
       title: "Trust & Transparency",
       description:
         "Every listing is verified and backed by reliable data to ensure complete transparency in your property journey.",
     },
     {
-      icon: <Users className="w-8 h-8 text-blue-600" />,
+      icon: <Users className="w-8 h-8 text-pink-600" />,
       title: "Customer-Centric",
       description:
         "We put our users first, designing every feature around making your real estate experience seamless and stress-free.",
     },
     {
-      icon: <TrendingUp className="w-8 h-8 text-blue-600" />,
+      icon: <TrendingUp className="w-8 h-8 text-pink-600" />,
       title: "Innovation",
       description:
         "Leveraging cutting-edge technology to provide smart search, AI-powered recommendations, and real-time market insights.",
     },
     {
-      icon: <Award className="w-8 h-8 text-blue-600" />,
+      icon: <Award className="w-8 h-8 text-pink-600" />,
       title: "Excellence",
       description:
         "Committed to delivering exceptional service and maintaining the highest standards in everything we do.",
@@ -61,9 +61,9 @@ export default function About() {
       {/* Hero Section */}
       <section className="py-20 px-4 max-w-6xl mx-auto text-center">
         <div className="mb-8">
-          <Home className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+          <Home className="w-16 h-16 text-pink-600 mx-auto mb-4" />
           <h1 className="text-5xl font-bold mb-6 text-slate-800 leading-tight">
-            About <span className="text-blue-600">Briickly</span>
+            About <span className="text-pink-600">Briickly</span>
           </h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
             Revolutionizing real estate with smart technology, transparent processes, and a customer-first approach to
@@ -73,13 +73,13 @@ export default function About() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-blue-600 text-white">
+      <section className="py-16 bg-pink-600 text-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {stats.map((stat, index) => (
               <div key={index} className="space-y-2">
                 <div className="text-4xl font-bold">{stat.number}</div>
-                <div className="text-blue-100">{stat.label}</div>
+                <div className="text-pink-100">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -101,22 +101,22 @@ export default function About() {
               both sophisticated and simple.
             </p>
           </div>
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 rounded-2xl">
+          <div className="bg-gradient-to-br from-pink-50 to-indigo-100 p-8 rounded-2xl">
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <MapPin className="w-6 h-6 text-blue-600" />
+                <MapPin className="w-6 h-6 text-pink-600" />
                 <span className="text-slate-700">Nationwide Coverage</span>
               </div>
               <div className="flex items-center space-x-3">
-                <Shield className="w-6 h-6 text-blue-600" />
+                <Shield className="w-6 h-6 text-pink-600" />
                 <span className="text-slate-700">Verified Listings</span>
               </div>
               <div className="flex items-center space-x-3">
-                <TrendingUp className="w-6 h-6 text-blue-600" />
+                <TrendingUp className="w-6 h-6 text-pink-600" />
                 <span className="text-slate-700">Real-time Market Data</span>
               </div>
               <div className="flex items-center space-x-3">
-                <Users className="w-6 h-6 text-blue-600" />
+                <Users className="w-6 h-6 text-pink-600" />
                 <span className="text-slate-700">Expert Support</span>
               </div>
             </div>
@@ -164,7 +164,7 @@ export default function About() {
                 />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-slate-800">{member.name}</h3>
-              <p className="text-blue-600 font-medium mb-3">{member.role}</p>
+              <p className="text-pink-600 font-medium mb-3">{member.role}</p>
               <p className="text-slate-600">{member.description}</p>
             </div>
           ))}
@@ -172,7 +172,7 @@ export default function About() {
       </section>
 
       {/* Story Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+      <section className="py-20 bg-gradient-to-r from-pink-600 to-indigo-700 text-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-8">Our Story</h2>
           <div className="space-y-6 text-lg leading-relaxed">
@@ -202,10 +202,10 @@ export default function About() {
             Join thousands of satisfied customers who have found their perfect properties with Briickly.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+            <button className="bg-pink-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-pink-700 transition-colors">
               Browse Properties
             </button>
-            <button className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+            <button className="border-2 border-pink-600 text-pink-600 px-8 py-3 rounded-lg font-semibold hover:bg-pink-50 transition-colors">
               List Your Property
             </button>
           </div>

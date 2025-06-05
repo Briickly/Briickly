@@ -98,7 +98,7 @@ export default function HomePage() {
               Welcome to Briickly
             </div>
             <h1 className="text-slate-800 font-bold text-4xl lg:text-7xl leading-tight mb-6">
-              Find your next <span className="text-pink-600">perfect</span>
+              Find your next <span className="text-pink-600 hover:text-blue-600 ">perfect</span>
               <br />
               place with ease
             </h1>

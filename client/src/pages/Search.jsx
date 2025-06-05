@@ -123,7 +123,7 @@ export default function Search() {
     const numberOfListings = listings.length
     const startIndex = numberOfListings
     const urlParams = new URLSearchParams(location.search)
-    urlParams.set("start", startIndex)
+    urlParams.set("startIndex", startIndex)
     const searchQuery = urlParams.toString()
     const res = await fetch(`/api/listing/get?${searchQuery}`)
     const data = await res.json()
@@ -181,7 +181,7 @@ export default function Search() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row">
+      <div className="max-w-7x mx-auto flex flex-col lg:flex-row">
         {/* Sidebar Filters */}
         <div
           className={`lg:w-80 bg-white border-r border-slate-200 ${
@@ -321,7 +321,7 @@ export default function Search() {
         {/* Results Section */}
         <div className="flex-1 lg:ml-0">
           {/* Results Header */}
-          <div className="bg-white border-b border-slate-200 p-6">
+          <div className="bg-white border-b border-slate-200 p-6 mt-6 lg:mt-0 rounded-t-lg">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-semibold text-slate-800">
@@ -371,7 +371,8 @@ export default function Search() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"> */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {listings.map((listing) => (
                     <div key={listing._id} className="group">
                       <ListingItem listing={listing} />

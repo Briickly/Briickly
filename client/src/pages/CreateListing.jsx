@@ -184,7 +184,7 @@ export default function CreateListing() {
                 <div
                   className={`flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all ${
                     currentStep >= step.number
-                      ? "bg-blue-600 border-blue-600 text-white"
+                      ? "bg-pink-600 border-pink-600 text-white"
                       : "bg-white border-slate-300 text-slate-400"
                   }`}
                 >
@@ -192,7 +192,7 @@ export default function CreateListing() {
                 </div>
                 <div className="ml-3 hidden sm:block">
                   <p
-                    className={`text-sm font-medium ${currentStep >= step.number ? "text-blue-600" : "text-slate-400"}`}
+                    className={`text-sm font-medium ${currentStep >= step.number ? "text-pink-600" : "text-slate-400"}`}
                   >
                     Step {step.number}
                   </p>
@@ -201,7 +201,7 @@ export default function CreateListing() {
                   </p>
                 </div>
                 {index < steps.length - 1 && (
-                  <div className={`w-16 h-0.5 ml-8 ${currentStep > step.number ? "bg-blue-600" : "bg-slate-300"}`} />
+                  <div className={`w-16 h-0.5 ml-8 ${currentStep > step.number ? "bg-pink-600" : "bg-slate-300"}`} />
                 )}
               </div>
             ))}
@@ -217,8 +217,8 @@ export default function CreateListing() {
                 {/* Basic Information */}
                 <div className="space-y-6">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <Home className="w-6 h-6 text-blue-600" />
+                    <div className="p-2 bg-pink-100 rounded-lg">
+                      <Home className="w-6 h-6 text-pink-600" />
                     </div>
                     <h2 className="text-2xl font-semibold text-slate-800">Basic Information</h2>
                   </div>
@@ -230,7 +230,7 @@ export default function CreateListing() {
                     <input
                       type="text"
                       placeholder="Beautiful 3BR apartment in downtown"
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                       id="name"
                       maxLength="62"
                       minLength="10"
@@ -246,7 +246,7 @@ export default function CreateListing() {
                     </label>
                     <textarea
                       placeholder="Describe your property in detail..."
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all h-32 resize-none"
+                      className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all h-32 resize-none"
                       id="description"
                       required
                       onChange={handleChange}
@@ -262,7 +262,7 @@ export default function CreateListing() {
                     <input
                       type="text"
                       placeholder="123 Main Street, City, State"
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                       id="address"
                       required
                       onChange={handleChange}
@@ -278,7 +278,7 @@ export default function CreateListing() {
                     <label
                       className={`flex items-center justify-center p-4 rounded-lg border-2 cursor-pointer transition-all ${
                         formData.type === "sale"
-                          ? "border-blue-500 bg-blue-50 text-blue-700"
+                          ? "border-pink-500 bg-pink-50 text-pink-700"
                           : "border-slate-300 hover:border-slate-400"
                       }`}
                     >
@@ -295,7 +295,7 @@ export default function CreateListing() {
                     <label
                       className={`flex items-center justify-center p-4 rounded-lg border-2 cursor-pointer transition-all ${
                         formData.type === "rent"
-                          ? "border-blue-500 bg-blue-50 text-blue-700"
+                          ? "border-pink-500 bg-pink-50 text-pink-700"
                           : "border-slate-300 hover:border-slate-400"
                       }`}
                     >
@@ -319,7 +319,7 @@ export default function CreateListing() {
                     <label
                       className={`flex items-center p-4 rounded-lg border-2 cursor-pointer transition-all ${
                         formData.parking
-                          ? "border-blue-500 bg-blue-50 text-blue-700"
+                          ? "border-pink-500 bg-pink-50 text-pink-700"
                           : "border-slate-300 hover:border-slate-400"
                       }`}
                     >
@@ -336,7 +336,7 @@ export default function CreateListing() {
                     <label
                       className={`flex items-center p-4 rounded-lg border-2 cursor-pointer transition-all ${
                         formData.furnished
-                          ? "border-blue-500 bg-blue-50 text-blue-700"
+                          ? "border-pink-500 bg-pink-50 text-pink-700"
                           : "border-slate-300 hover:border-slate-400"
                       }`}
                     >
@@ -353,7 +353,7 @@ export default function CreateListing() {
                     <label
                       className={`flex items-center p-4 rounded-lg border-2 cursor-pointer transition-all ${
                         formData.offer
-                          ? "border-blue-500 bg-blue-50 text-blue-700"
+                          ? "border-pink-500 bg-pink-50 text-pink-700"
                           : "border-slate-300 hover:border-slate-400"
                       }`}
                     >
@@ -385,7 +385,7 @@ export default function CreateListing() {
                         min="1"
                         max="10"
                         required
-                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                         onChange={handleChange}
                         value={formData.bedrooms}
                       />
@@ -401,7 +401,7 @@ export default function CreateListing() {
                         min="1"
                         max="10"
                         required
-                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                         onChange={handleChange}
                         value={formData.bathrooms}
                       />
@@ -429,7 +429,7 @@ export default function CreateListing() {
                           min="50"
                           max="10000000"
                           required
-                          className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                          className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                           onChange={handleChange}
                           value={formData.regularPrice}
                         />
@@ -449,7 +449,7 @@ export default function CreateListing() {
                             min="0"
                             max="10000000"
                             required
-                            className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                             onChange={handleChange}
                             value={formData.discountPrice}
                           />
@@ -463,8 +463,8 @@ export default function CreateListing() {
               {/* Right Column - Images */}
               <div className="space-y-6">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <ImageIcon className="w-6 h-6 text-blue-600" />
+                  <div className="p-2 bg-pink-100 rounded-lg">
+                    <ImageIcon className="w-6 h-6 text-pink-600" />
                   </div>
                   <div>
                     <h2 className="text-2xl font-semibold text-slate-800">Property Images</h2>
@@ -473,12 +473,12 @@ export default function CreateListing() {
                 </div>
 
                 {/* Image Upload */}
-                <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
+                <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-pink-400 transition-colors">
                   <Upload className="w-12 h-12 text-slate-400 mx-auto mb-4" />
                   <div className="space-y-4">
                     <input
                       onChange={(e) => setFiles(Array.from(e.target.files))}
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                       type="file"
                       id="images"
                       accept="image/*"
@@ -488,7 +488,7 @@ export default function CreateListing() {
                       type="button"
                       disabled={uploading}
                       onClick={handleImageSubmit}
-                      className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                      className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-pink-600 text-white rounded-lg font-medium hover:bg-pink-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
                     >
                       {uploading ? (
                         <>
@@ -525,7 +525,7 @@ export default function CreateListing() {
                             className="w-full h-32 object-cover rounded-lg border border-slate-200"
                           />
                           {index === 0 && (
-                            <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                            <div className="absolute top-2 left-2 bg-pink-600 text-white text-xs px-2 py-1 rounded">
                               Cover
                             </div>
                           )}

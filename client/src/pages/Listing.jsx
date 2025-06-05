@@ -77,7 +77,7 @@ export default function Listing() {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 text-pink-600 animate-spin mx-auto mb-4" />
           <p className="text-xl text-slate-600">Loading property details...</p>
         </div>
       </div>
@@ -191,7 +191,7 @@ export default function Listing() {
                   <div className="flex items-center gap-3 mb-4">
                     <span
                       className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        listing.type === "rent" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"
+                        listing.type === "rent" ? "bg-pink-100 text-pink-800" : "bg-green-100 text-green-800"
                       }`}
                     >
                       For {listing.type === "rent" ? "Rent" : "Sale"}
@@ -205,7 +205,7 @@ export default function Listing() {
                   </div>
                   <h1 className="text-3xl lg:text-4xl font-bold text-slate-800 mb-4">{listing.name}</h1>
                   <div className="flex items-center gap-2 text-slate-600">
-                    <MapPin className="w-5 h-5 text-blue-600" />
+                    <MapPin className="w-5 h-5 text-pink-600" />
                     <span className="text-lg">{listing.address}</span>
                   </div>
                 </div>
@@ -241,7 +241,7 @@ export default function Listing() {
                   <div key={index} className="text-center">
                     <div
                       className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 ${
-                        feature.available !== false ? "bg-blue-100 text-blue-600" : "bg-slate-100 text-slate-400"
+                        feature.available !== false ? "bg-pink-100 text-pink-600" : "bg-slate-100 text-slate-400"
                       }`}
                     >
                       {feature.icon}
@@ -265,22 +265,22 @@ export default function Listing() {
               <h2 className="text-2xl font-semibold text-slate-800 mb-6">Property Highlights</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-lg">
-                  <Home className="w-5 h-5 text-blue-600" />
+                  <Home className="w-5 h-5 text-pink-600" />
                   <span className="text-slate-700">Property Type: {listing.type === "rent" ? "Rental" : "Sale"}</span>
                 </div>
                 <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-lg">
-                  <Calendar className="w-5 h-5 text-blue-600" />
+                  <Calendar className="w-5 h-5 text-pink-600" />
                   <span className="text-slate-700">Available Now</span>
                 </div>
                 {listing.parking && (
                   <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-lg">
-                    <Car className="w-5 h-5 text-blue-600" />
+                    <Car className="w-5 h-5 text-pink-600" />
                     <span className="text-slate-700">Parking Included</span>
                   </div>
                 )}
                 {listing.furnished && (
                   <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-lg">
-                    <Sofa className="w-5 h-5 text-blue-600" />
+                    <Sofa className="w-5 h-5 text-pink-600" />
                     <span className="text-slate-700">Fully Furnished</span>
                   </div>
                 )}
@@ -301,7 +301,7 @@ export default function Listing() {
                 {!contact ? (
                   <button
                     onClick={() => setContact(true)}
-                    className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                    className="w-full bg-pink-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-pink-700 transition-colors flex items-center justify-center gap-2"
                   >
                     <Mail className="w-5 h-5" />
                     Contact Landlord
@@ -354,12 +354,12 @@ export default function Listing() {
             </div>
 
             {/* Safety Tips */}
-            <div className="bg-blue-50 rounded-2xl p-6">
-              <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center gap-2">
+            <div className="bg-pink-50 rounded-2xl p-6">
+              <h3 className="text-lg font-semibold text-pink-800 mb-3 flex items-center gap-2">
                 <CheckCircle className="w-5 h-5" />
                 Safety Tips
               </h3>
-              <ul className="text-sm text-blue-700 space-y-2">
+              <ul className="text-sm text-pink-700 space-y-2">
                 <li>• Always verify the property in person</li>
                 <li>• Never send money before viewing</li>
                 <li>• Meet in a public place first</li>
