@@ -1,16 +1,18 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import Profile from './pages/Profile';
-import About from './pages/About';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
+import About from './pages/About';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminLogin from './pages/AdminLogin';
 import CreateListing from './pages/CreateListing';
-import UpdateListing from './pages/UpdateListing';
+import Home from './pages/Home';
 import Listing from './pages/Listing';
+import Profile from './pages/Profile';
 import Search from './pages/Search';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import UpdateListing from './pages/UpdateListing';
 
 export default function App() {
   return (
@@ -30,6 +32,10 @@ export default function App() {
             path='/update-listing/:listingId'
             element={<UpdateListing />}
           />
+        </Route>
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<PrivateRoute />}>
+          <Route index element={<AdminDashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>

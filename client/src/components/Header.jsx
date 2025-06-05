@@ -1,9 +1,9 @@
 "use client"
 
+import { ChevronDown, Home, Info, LogOut, Menu, PlusCircle, Search, User, X } from "lucide-react"
 import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
-import { Search, Home, Info, User, Menu, X, ChevronDown, LogOut, PlusCircle } from "lucide-react"
 import { signOut } from "../redux/user/userSlice"
 
 export default function Header() {
@@ -142,6 +142,16 @@ export default function Header() {
                         <PlusCircle className="w-4 h-4" />
                         Create Listing
                       </Link>
+                      {currentUser.isAdmin && (
+                        <Link
+                          to="/admin/dashboard"
+                          className="flex items-center gap-3 px-4 py-2 text-purple-600 hover:bg-purple-50 transition-colors"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <Settings className="w-4 h-4" />
+                          Admin Dashboard
+                        </Link>
+                      )}
                       <div className="border-t border-slate-100 mt-2 pt-2">
                         <button
                           onClick={handleSignOut}
@@ -246,6 +256,16 @@ export default function Header() {
                       <PlusCircle className="w-4 h-4" />
                       Create Listing
                     </Link>
+                    {currentUser.isAdmin && (
+                      <Link
+                        to="/admin/dashboard"
+                        className="flex items-center gap-3 px-4 py-3 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <Settings className="w-4 h-4" />
+                        Admin Dashboard
+                      </Link>
+                    )}
                     <button
                       onClick={() => {
                         setIsMenuOpen(false)

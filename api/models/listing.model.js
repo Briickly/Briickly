@@ -54,6 +54,19 @@ const listingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    approvalStatus: {
+      type: String,
+      enum: ['pending', 'approved', 'rejected'],
+      default: 'pending'
+    },
+    approvedBy: {
+      type: String,
+      default: null
+    },
+    requiresApproval: {
+      type: Boolean,
+      default: true
+    },
   },
   { timestamps: true }
 );
