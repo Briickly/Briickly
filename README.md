@@ -27,7 +27,7 @@
 
 ### 🎨 Modern UI/UX
 
-* Dark theme with elegant transitions
+* Modern theme with elegant transitions
 * Mobile-first responsive design
 * Streamlined forms and navigation
 
@@ -224,7 +224,6 @@ Please include the following:
 * [Tailwind CSS](https://tailwindcss.com/)
 * [Cloudinary](https://cloudinary.com/)
 * [Vite](https://vitejs.dev/)
-* All contributors who supported this project 💛
 
 ---
 
@@ -240,8 +239,4 @@ Please include the following:
 
 ## 📄 License
 
-This project is licensed under the *MIT License*. See the [LICENSE](./LICENSE) file for more details.
-
----
-
-If you want, I can help you convert this to Markdown with a table of contents or a prettier styled README too!
+This project is licensed under the *MIT License*.
