@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronDown, Home, Info, LogOut, Menu, PlusCircle, Search, User, X } from "lucide-react"
+import { ChevronDown, Home, Info, LogOut, Menu, PlusCircle, Search, Settings, User, X } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
