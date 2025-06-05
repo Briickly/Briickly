@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
-import { Search, Home, Info, User, Menu, X, ChevronDown, LogOut, Heart, PlusCircle } from "lucide-react"
+import { useSelector, useDispatch } from "react-redux"
+import { Search, Home, Info, User, Menu, X, ChevronDown, LogOut, PlusCircle } from "lucide-react"
+import { signOut } from "../redux/user/userSlice"
 
 export default function Header() {
+  const dispatch = useDispatch()
   const { currentUser } = useSelector((state) => state.user)
   const [searchTerm, setSearchTerm] = useState("")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -28,7 +30,6 @@ export default function Header() {
     }
   }, [location.search])
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = () => {
       setIsProfileOpen(false)
@@ -43,20 +44,32 @@ export default function Header() {
     { to: "/about", label: "About", icon: <Info className="w-4 h-4 text-pink-500" /> },
   ]
 
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch("/api/auth/signout", {
+        method: "POST",
+        credentials: "include",
+      })
+      if (!res.ok) {
+        throw new Error(`Sign out failed: ${res.status}`)
+      }
+      dispatch(signOut())
+      navigate("/", { replace: true })
+    } catch (error) {
+      console.error("Sign out failed:", error)
+      dispatch(signOut())
+      navigate("/", { replace: true })
+    }
+  }
+
   return (
-<header className="bg-gradient-to-r from-pink-600 to-indigo-700 text-pink-100 shadow-sm border-b sticky top-0 z-50">
+    <header className="bg-gradient-to-r from-pink-600 to-indigo-700 text-pink-100 shadow-sm border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
-      {/* <div className="w-full px-8"> */}
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            {/* <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center group-hover:bg-blue-700 transition-colors">
-              <Home className="w-5 h-5 text-white" />
-            </div> */}
             <h1 className="font-bold text-3xl text-black-800 group-hover:text-blue-600 transition-colors">Briickly</h1>
           </Link>
 
-          {/* Search Bar - Desktop */}
           <form onSubmit={handleSubmit} className="hidden md:flex items-center flex-1 max-w-md mx-8">
             <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text--400" />
@@ -74,9 +87,8 @@ export default function Header() {
                 <Search className="w-4 h-4" />
               </button>
             </div>
-          </form> 
+          </form>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
@@ -89,7 +101,6 @@ export default function Header() {
               </Link>
             ))}
 
-            {/* User Menu */}
             {currentUser ? (
               <div className="relative">
                 <button
@@ -107,7 +118,6 @@ export default function Header() {
                   <ChevronDown className="w-4 h-4 text-slate-500" />
                 </button>
 
-                {/* Profile Dropdown */}
                 {isProfileOpen && (
                   <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-slate-200 py-2">
                     <div className="px-4 py-3 border-b border-slate-100">
@@ -132,16 +142,11 @@ export default function Header() {
                         <PlusCircle className="w-4 h-4" />
                         Create Listing
                       </Link>
-                      <Link
-                        to="/saved-properties"
-                        className="flex items-center gap-3 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors"
-                        onClick={() => setIsProfileOpen(false)}
-                      >
-                        <Heart className="w-4 h-4" />
-                        Saved Properties
-                      </Link>
                       <div className="border-t border-slate-100 mt-2 pt-2">
-                        <button className="flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 transition-colors w-full text-left">
+                        <button
+                          onClick={handleSignOut}
+                          className="flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 transition-colors w-full text-left"
+                        >
                           <LogOut className="w-4 h-4" />
                           Sign Out
                         </button>
@@ -165,7 +170,6 @@ export default function Header() {
             )}
           </nav>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={(e) => {
               e.stopPropagation()
@@ -177,7 +181,6 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile Search Bar */}
         <div className="md:hidden pb-4">
           <form onSubmit={handleSubmit} className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
@@ -197,7 +200,6 @@ export default function Header() {
           </form>
         </div>
 
-        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden border-t border-slate-200 py-4">
             <nav className="space-y-2">
@@ -244,7 +246,13 @@ export default function Header() {
                       <PlusCircle className="w-4 h-4" />
                       Create Listing
                     </Link>
-                    <button className="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors w-full text-left">
+                    <button
+                      onClick={() => {
+                        setIsMenuOpen(false)
+                        handleSignOut()
+                      }}
+                      className="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors w-full text-left"
+                    >
                       <LogOut className="w-4 h-4" />
                       Sign Out
                     </button>
