@@ -173,16 +173,16 @@ export default function SignIn() {
       </div>
 {/* Floating Admin Button */}
 <Link
-to="/admin"
-className="fixed bottom-6 right-6 group bg-slate-800 hover:bg-slate-900 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-50"
-title="Admin Login"
+  to="/admin"
+  className="fixed bottom-6 right-6 group bg-slate-800 hover:bg-slate-900 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-50"
+  title="Admin Login"
 >
-<div className="flex items-center gap-2">
-  <Shield className="w-5 h-5" />
-  <span className="text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-    admin?
-  </span>
-</div>
+  <div className="flex items-center gap-2">
+    <Shield className="w-5 h-5" />
+    <span className="text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+      admin?
+    </span>
+  </div>
 </Link>
      </div>
   )
