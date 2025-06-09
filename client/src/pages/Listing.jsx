@@ -215,18 +215,18 @@ export default function Listing() {
               <div className="border-t pt-6">
                 <div className="flex items-center gap-4 mb-2">
                   <div className="text-4xl font-bold text-slate-800">
-                    ${finalPrice.toLocaleString("en-US")}
+                    ₹{finalPrice.toLocaleString("en-US")}
                     {listing.type === "rent" && <span className="text-xl text-slate-600"> / month</span>}
                   </div>
                   {listing.offer && (
                     <div className="text-xl text-slate-500 line-through">
-                      ${listing.regularPrice.toLocaleString("en-US")}
+                      ₹{listing.regularPrice.toLocaleString("en-US")}
                     </div>
                   )}
                 </div>
                 {listing.offer && (
                   <div className="text-green-600 font-semibold">
-                    Save ${discountAmount.toLocaleString("en-US")}
+                    Save ₹{discountAmount.toLocaleString("en-US")}
                     {listing.type === "rent" && " per month"}
                   </div>
                 )}
@@ -347,7 +347,7 @@ export default function Listing() {
                 {listing.offer && (
                   <div className="flex justify-between pt-3 border-t">
                     <span className="text-slate-600">You Save</span>
-                    <span className="font-bold text-green-600">${discountAmount.toLocaleString("en-US")}</span>
+                    <span className="font-bold text-green-600">₹{discountAmount.toLocaleString("en-US")}</span>
                   </div>
                 )}
               </div>
