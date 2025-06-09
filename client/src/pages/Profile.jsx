@@ -27,6 +27,7 @@ import {
   Shield,
   Clock,
   XCircle,
+  X,
 } from "lucide-react"
 
 export default function Profile() {
@@ -48,6 +49,8 @@ export default function Profile() {
   const [showListings, setShowListings] = useState(false)
   const [activeTab, setActiveTab] = useState("profile")
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [listingFilter, setListingFilter] = useState("all")
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
 
   useEffect(() => {
     if (!currentUser) {
@@ -62,6 +65,7 @@ export default function Profile() {
   }, [file])
 
   const handleFileUpload = async (file) => {
+    setIsUploadingAvatar(true)
     const formDataUpload = new FormData()
     formDataUpload.append("file", file)
     formDataUpload.append("upload_preset", "my_unsigned")
@@ -75,9 +79,13 @@ export default function Profile() {
       const data = await res.json()
 
       if (data.secure_url) {
-        setFormData((prev) => ({ ...prev, avatar: data.secure_url }))
+        const newFormData = { ...formData, avatar: data.secure_url }
+        setFormData(newFormData)
         setFilePerc(100)
         setFileUploadError(false)
+
+        // Auto-update profile with new avatar
+        await updateProfileWithAvatar(data.secure_url)
       } else {
         throw new Error(data.error?.message || "Image upload failed")
       }
@@ -85,6 +93,62 @@ export default function Profile() {
       console.error("Upload error:", error)
       setFileUploadError(true)
       setFilePerc(0)
+    } finally {
+      setIsUploadingAvatar(false)
+    }
+  }
+
+  const updateProfileWithAvatar = async (avatarUrl) => {
+    try {
+      dispatch(updateUserStart())
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          ...formData,
+          avatar: avatarUrl,
+        }),
+      })
+      const data = await res.json()
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message))
+        return
+      }
+      dispatch(updateUserSuccess(data))
+    } catch (error) {
+      dispatch(updateUserFailure(error.message))
+    }
+  }
+
+  const handleRemoveAvatar = async () => {
+    try {
+      setIsUploadingAvatar(true)
+      const newFormData = { ...formData, avatar: "" }
+      setFormData(newFormData)
+
+      // Auto-update profile to remove avatar
+      dispatch(updateUserStart())
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(newFormData),
+      })
+      const data = await res.json()
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message))
+        return
+      }
+      dispatch(updateUserSuccess(data))
+    } catch (error) {
+      dispatch(updateUserFailure(error.message))
+    } finally {
+      setIsUploadingAvatar(false)
     }
   }
 
@@ -200,6 +264,40 @@ export default function Profile() {
     }
   }
 
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "approved":
+        return <CheckCircle className="h-4 w-4" />
+      case "rejected":
+        return <XCircle className="h-4 w-4" />
+      case "pending":
+      default:
+        return <Clock className="h-4 w-4" />
+    }
+  }
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "approved":
+        return "bg-green-100 text-green-800 border-green-200"
+      case "rejected":
+        return "bg-red-100 text-red-800 border-red-200"
+      case "pending":
+      default:
+        return "bg-yellow-100 text-yellow-800 border-yellow-200"
+    }
+  }
+
+  const filteredListings = userListings.filter((listing) => {
+    if (listingFilter === "all") return true
+    return listing.approvalStatus === listingFilter
+  })
+
+  const getFilterCount = (status) => {
+    if (status === "all") return userListings.length
+    return userListings.filter((listing) => listing.approvalStatus === status).length
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 py-10">
       <div className="max-w-6xl mx-auto px-4">
@@ -207,11 +305,8 @@ export default function Profile() {
           {/* Profile Header */}
           <div className="bg-gradient-to-r from-pink-600 to-indigo-700 p-8 text-white">
             <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="relative">
-                <div
-                  onClick={() => fileRef.current.click()}
-                  className="h-28 w-28 rounded-full bg-white/20 flex items-center justify-center cursor-pointer overflow-hidden border-4 border-white/30 hover:border-white/50 transition-all"
-                >
+              <div className="relative group">
+                <div className="h-28 w-28 rounded-full bg-white/20 flex items-center justify-center overflow-hidden border-4 border-white/30 hover:border-white/50 transition-all">
                   {formData.avatar ? (
                     <img
                       src={formData.avatar || "/placeholder.svg"}
@@ -222,11 +317,31 @@ export default function Profile() {
                     <User className="h-14 w-14 text-white/70" />
                   )}
                 </div>
-                <div className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-slate-100 transition-colors">
+
+                {/* Camera Icon - Functional */}
+                <button
+                  onClick={() => fileRef.current.click()}
+                  className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg hover:bg-slate-100 transition-colors"
+                  disabled={isUploadingAvatar}
+                >
                   <Camera className="h-4 w-4 text-pink-600" />
-                </div>
+                </button>
+
+                {/* Remove Avatar Button */}
+                {formData.avatar && (
+                  <button
+                    onClick={handleRemoveAvatar}
+                    className="absolute top-0 right-0 bg-red-500 rounded-full p-1.5 shadow-lg hover:bg-red-600 transition-colors"
+                    disabled={isUploadingAvatar}
+                    title="Remove profile picture"
+                  >
+                    <X className="h-3 w-3 text-white" />
+                  </button>
+                )}
+
                 <input onChange={(e) => setFile(e.target.files[0])} type="file" ref={fileRef} hidden accept="image/*" />
               </div>
+
               <div className="text-center md:text-left">
                 <h1 className="text-3xl font-bold">{currentUser?.username || "User"}</h1>
                 <p className="text-pink-100">{currentUser?.email}</p>
@@ -235,18 +350,19 @@ export default function Profile() {
                     <AlertCircle className="h-4 w-4" />
                     <span>Upload failed (image must be less than 10MB)</span>
                   </div>
-                ) : filePerc > 0 && filePerc < 100 ? (
+                ) : isUploadingAvatar ? (
                   <div className="flex items-center gap-2 mt-2 bg-pink-500/20 text-white px-3 py-1 rounded-full text-sm">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    <span>Uploading {filePerc}%</span>
+                    <span>Updating profile...</span>
                   </div>
                 ) : filePerc === 100 ? (
                   <div className="flex items-center gap-2 mt-2 bg-green-500/20 text-white px-3 py-1 rounded-full text-sm">
                     <CheckCircle className="h-4 w-4" />
-                    <span>Image uploaded successfully</span>
+                    <span>Profile picture updated!</span>
                   </div>
                 ) : null}
               </div>
+
               <div className="md:ml-auto flex gap-3">
                 <button
                   onClick={handleSignOut}
@@ -293,6 +409,11 @@ export default function Profile() {
               >
                 <Home className="h-4 w-4" />
                 My Listings
+                {userListings.length > 0 && (
+                  <span className="bg-pink-100 text-pink-800 text-xs px-2 py-1 rounded-full">
+                    {userListings.length}
+                  </span>
+                )}
               </button>
               <button
                 onClick={() => setActiveTab("security")}
@@ -390,7 +511,7 @@ export default function Profile() {
 
             {activeTab === "listings" && (
               <div>
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
                   <h2 className="text-2xl font-semibold text-slate-800">My Listings</h2>
                   <Link
                     to="/create-listing"
@@ -401,14 +522,40 @@ export default function Profile() {
                   </Link>
                 </div>
 
+                {/* Filter Tabs */}
+                <div className="flex flex-wrap gap-2 mb-6 p-1 bg-slate-100 rounded-lg">
+                  {[
+                    { key: "all", label: "All Listings" },
+                    { key: "approved", label: "Approved" },
+                    { key: "pending", label: "Pending" },
+                    { key: "rejected", label: "Rejected" },
+                  ].map((filter) => (
+                    <button
+                      key={filter.key}
+                      onClick={() => setListingFilter(filter.key)}
+                      className={`px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${
+                        listingFilter === filter.key
+                          ? "bg-white text-pink-600 shadow-sm"
+                          : "text-slate-600 hover:text-slate-900"
+                      }`}
+                    >
+                      {filter.key !== "all" && getStatusIcon(filter.key)}
+                      {filter.label}
+                      <span className="bg-slate-200 text-slate-600 text-xs px-2 py-1 rounded-full">
+                        {getFilterCount(filter.key)}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
                 {showListingsError ? (
                   <div className="bg-red-50 text-red-700 p-4 rounded-lg flex items-start gap-3">
                     <AlertCircle className="h-5 w-5 mt-0.5" />
                     <span>Error loading listings. Please try again.</span>
                   </div>
-                ) : userListings && userListings.length > 0 ? (
+                ) : filteredListings && filteredListings.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {userListings.map((listing) => (
+                    {filteredListings.map((listing) => (
                       <div
                         key={listing._id}
                         className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
@@ -420,34 +567,32 @@ export default function Profile() {
                               alt="listing cover"
                               className="h-full w-full object-cover"
                             />
-                        </Link>
-                           <div className="p-4 flex-1 flex flex-col">
-                            <div className="flex items-center gap-2 mb-2">
+                          </Link>
+                          <div className="p-4 flex-1 flex flex-col">
+                            <div className="flex items-start justify-between mb-2">
                               <Link
-                                className="text-slate-800 font-semibold text-lg hover:text-pink-600 transition-colors line-clamp-1"
+                                className="text-slate-800 font-semibold text-lg hover:text-pink-600 transition-colors line-clamp-1 flex-1"
                                 to={`/listing/${listing._id}`}
                               >
                                 {listing.name}
                               </Link>
-                              {listing.approvalStatus === 'pending' && (
-                                <span className="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full flex items-center gap-1">
-                                  <Clock className="h-3 w-3" />
-                                  Pending Approval
-                                </span>
-                              )}
-                              {listing.approvalStatus === 'approved' && (
-                                <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full flex items-center gap-1">
-                                  <CheckCircle className="h-3 w-3" />
-                                  Approved
-                                </span>
-                              )}
-                              {listing.approvalStatus === 'rejected' && (
-                                <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full flex items-center gap-1">
-                                  <XCircle className="h-3 w-3" />
-                                  Rejected
-                                </span>
-                              )}
                             </div>
+
+                            {/* Enhanced Status Badge */}
+                            <div className="mb-3">
+                              <span
+                                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full border ${getStatusColor(
+                                  listing.approvalStatus || "pending",
+                                )}`}
+                              >
+                                {getStatusIcon(listing.approvalStatus || "pending")}
+                                {listing.approvalStatus === "approved" && "Approved"}
+                                {listing.approvalStatus === "rejected" && "Rejected"}
+                                {(!listing.approvalStatus || listing.approvalStatus === "pending") &&
+                                  "Pending Approval"}
+                              </span>
+                            </div>
+
                             <p className="text-slate-500 text-sm mb-3 line-clamp-2">{listing.description}</p>
                             <div className="mt-auto flex items-center justify-between">
                               <span className="text-pink-600 font-semibold">
@@ -479,15 +624,23 @@ export default function Profile() {
                 ) : (
                   <div className="text-center py-12 bg-slate-50 rounded-lg">
                     <Home className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-                    <h3 className="text-xl font-medium text-slate-700 mb-2">No listings yet</h3>
-                    <p className="text-slate-500 mb-6">Create your first property listing to get started</p>
-                    <Link
-                      to="/create-listing"
-                      className="inline-flex items-center gap-2 bg-pink-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-pink-700 transition-colors"
-                    >
-                      <Plus className="h-4 w-4" />
-                      Create Your First Listing
-                    </Link>
+                    <h3 className="text-xl font-medium text-slate-700 mb-2">
+                      {listingFilter === "all" ? "No listings yet" : `No ${listingFilter} listings`}
+                    </h3>
+                    <p className="text-slate-500 mb-6">
+                      {listingFilter === "all"
+                        ? "Create your first property listing to get started"
+                        : `You don't have any ${listingFilter} listings at the moment`}
+                    </p>
+                    {listingFilter === "all" && (
+                      <Link
+                        to="/create-listing"
+                        className="inline-flex items-center gap-2 bg-pink-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-pink-700 transition-colors"
+                      >
+                        <Plus className="h-4 w-4" />
+                        Create Your First Listing
+                      </Link>
+                    )}
                   </div>
                 )}
               </div>
@@ -545,331 +698,3 @@ export default function Profile() {
     </div>
   )
 }
-
-
-// import React, { useState, useRef, useEffect } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
-
-// import {
-//   updateUserFailure,
-//   updateUserStart,
-//   updateUserSuccess,
-//   deleteUserFailure,
-//   deleteUserStart,
-//   deleteUserSuccess,
-//   signOut,
-// } from '../redux/user/userSlice';
-// import { useNavigate } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
-
-// export default function Profile() {
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-//   const fileRef = useRef(null);
-//   const { currentUser, loading, error } = useSelector((state) => state.user);
-//   const [file, setFile] = useState(undefined);
-//   const [filePerc, setFilePerc] = useState(0);
-//   const [fileUploadError, setFileUploadError] = useState(false);
-//   const [formData, setFormData] = useState({
-//     username: currentUser?.username || '',
-//     email: currentUser?.email || '',
-//     avatar: currentUser?.avatar || '',
-//     password: '',
-//   });
-//   const [showListingsError, setShowListingsError] = useState(false);
-//   const [userListings, setUserListings] = useState([]);
-
-//   useEffect(() => {
-//     if (!currentUser) {
-//       navigate('/sign-in', { replace: true });
-//     }
-//   }, [currentUser, navigate]);
-
-//   useEffect(() => {
-//     if (file) {
-//       handleFileUpload(file);
-//     }
-//   }, [file]);
-
-//   const handleFileUpload = async (file) => {
-//     const formDataUpload = new FormData();
-//     formDataUpload.append('file', file);
-//     formDataUpload.append('upload_preset', 'my_unsigned');
-
-//     try {
-//       const res = await fetch('https://api.cloudinary.com/v1_1/duvqbiq0s/image/upload', {
-//         method: 'POST',
-//         body: formDataUpload,
-//       });
-
-//       const data = await res.json();
-
-//       if (data.secure_url) {
-//         setFormData((prev) => ({ ...prev, avatar: data.secure_url }));
-//         setFilePerc(100);
-//         setFileUploadError(false);
-//       } else {
-//         throw new Error(data.error?.message || 'Image upload failed');
-//       }
-//     } catch (error) {
-//       console.error('Upload error:', error);
-//       setFileUploadError(true);
-//       setFilePerc(0);
-//     }
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!currentUser || !currentUser._id) {
-//       dispatch(updateUserFailure('User not authenticated'));
-//       return;
-//     }
-//     try {
-//       dispatch(updateUserStart());
-//       const res = await fetch(`/api/user/update/${currentUser._id}`, {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         credentials: 'include',
-//         body: JSON.stringify(formData),
-//       });
-//       const data = await res.json();
-//       if (data.success === false) {
-//         dispatch(updateUserFailure(data.message));
-//         return;
-//       }
-//       dispatch(updateUserSuccess(data));
-//     } catch (error) {
-//       dispatch(updateUserFailure(error.message));
-//     }
-//   };
-
-//   const handleDeleteUser = async () => {
-//     if (!currentUser || !currentUser._id) {
-//       dispatch(deleteUserFailure('User not authenticated'));
-//       navigate('/sign-in', { replace: true });
-//       return;
-//     }
-//     try {
-//       dispatch(deleteUserStart());
-//       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
-//         method: 'DELETE',
-//         credentials: 'include',
-//       });
-//       if (!res.ok) {
-//         const text = await res.text();
-//         throw new Error(`HTTP error! Status: ${res.status}, Message: ${text}`);
-//       }
-//       const contentType = res.headers.get('content-type');
-//       if (contentType && contentType.includes('application/json')) {
-//         const data = await res.json();
-//         if (data.success === false) {
-//           dispatch(deleteUserFailure(data.message));
-//           return;
-//         }
-//       }
-//       dispatch(deleteUserSuccess());
-//       navigate('/sign-in', { replace: true });
-//     } catch (error) {
-//       dispatch(deleteUserFailure(error.message));
-//       navigate('/sign-in', { replace: true });
-//     }
-//   };
-
-//   const handleSignOut = async () => {
-//     try {
-//       const res = await fetch('/api/auth/signout', {
-//         method: 'POST',
-//         credentials: 'include',
-//       });
-//       if (!res.ok) {
-//         throw new Error(`Sign out failed: ${res.status}`);
-//       }
-//       dispatch(signOut()); // Use the correct signOut action
-//       navigate('/sign-in', { replace: true }); // Fixed typo in path
-//     } catch (error) {
-//       console.error('Sign out failed:', error);
-//       dispatch(signOut()); // Clear state even on error
-//       navigate('/sign-in', { replace: true });
-//     }
-//   };
-
-//   const handleShowListings = async () => {
-//     try {
-//       setShowListingsError(false);
-//       const res = await fetch(`/api/user/listings/${currentUser._id}`);
-//       const data = await res.json();
-//       if (data.success === false) {
-//         setShowListingsError(true);
-//         return;
-//       }
-
-//       setUserListings(data);
-//     } catch (error) {
-//       setShowListingsError(true);
-//     }
-//   };
-
-//   const handleListingDelete = async (listingId) => {
-//     try {
-//       const res = await fetch(`/api/listing/delete/${listingId}`, {
-//         method: 'DELETE',
-//       });
-//       const data = await res.json();
-//       if (data.success === false) {
-//         console.log(data.message);
-//         return;
-//       }
-
-//       setUserListings((prev) =>
-//         prev.filter((listing) => listing._id !== listingId)
-//       );
-//     } catch (error) {
-//       console.log(error.message);
-//     }
-//   };
-
-//   return (
-//     <div className="p-3 max-w-lg mx-auto">
-//       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
-//       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-//         <input
-//           onChange={(e) => setFile(e.target.files[0])}
-//           type="file"
-//           ref={fileRef}
-//           hidden
-//           accept="image/*"
-//         />
-
-//         {formData.avatar && (
-//           <img
-//             onClick={() => fileRef.current.click()}
-//             src={formData.avatar}
-//             alt="profile"
-//             className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2"
-//           />
-//         )}
-
-//         <p className="text-sm self-center">
-//           {fileUploadError ? (
-//             <span className="text-red-700">
-//               Error Image Upload (image size must be less than 10MB)
-//             </span>
-//           ) : filePerc > 0 && filePerc < 100 ? (
-//             <span className="text-slate-700">Uploading {filePerc}%</span>
-//           ) : filePerc === 100 ? (
-//             <span className="text-green-700">Image Successfully Uploaded</span>
-//           ) : (
-//             ''
-//           )}
-//         </p>
-
-//         <input
-//           type="text"
-//           placeholder="username"
-//           id="username"
-//           defaultValue={currentUser?.username}
-//           className="border p-3 rounded-lg"
-//           value={formData.username}
-//           onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-//         />
-
-//         <input
-//           type="email"
-//           placeholder="email"
-//           id="email"
-//           defaultValue={currentUser?.email}
-//           className="border p-3 rounded-lg"
-//           value={formData.email}
-//           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-//         />
-
-//         <input
-//           type="password"
-//           placeholder="password"
-//           id="password"
-//           className="border p-3 rounded-lg"
-//           value={formData.password}
-//           onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-//         />
-
-//         <button
-//           disabled={loading}
-//           className="bg-slate-500 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
-//         >
-//           {loading ? 'Loading...' : 'Update'}
-//         </button>
-//         <Link 
-//           className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95' 
-//           to={"/create-listing"}
-//         >
-//           Create Listing
-//         </Link>
-//       </form>
-
-//       {error && <p className="text-red-700 text-sm mt-2">{error}</p>}
-
-//       <div className="flex justify-between mt-5">
-//         <span onClick={handleDeleteUser} className="text-red-800 cursor-pointer">
-//           Delete Account
-//         </span>
-//         <span onClick={handleSignOut} className="text-red-800 cursor-pointer">
-//           Sign Out
-//         </span>
-//       </div>
-
-//       {/* <p className='text-red-700 mt-5'>{error ? error : ''}</p>
-//       <p className='text-green-700 mt-5'>
-//         {updateSuccess ? 'User is updated successfully!' : ''}
-//       </p> */}
-
-//       <button onClick={handleShowListings} className='text-green-700 w-full'>
-//         Show Listings
-//       </button>
-//       <p className='text-red-700 mt-5'>
-//         {showListingsError ? 'Error showing listings' : ''}
-//       </p>
-
-//       {userListings &&
-//         userListings.length > 0 &&
-//         <div className="flex flex-col gap-4">
-//           <h1 className='text-center mt-7 text-2xl font-semibold'>Your Listings</h1>
-//           {userListings.map((listing) => (
-//             <div
-//               key={listing._id}
-//               className='border rounded-lg p-3 flex justify-between items-center gap-4'
-//             >
-//               <Link to={`/listing/${listing._id}`}>
-//                 <img
-//                   src={listing.imageUrls[0]}
-//                   alt='listing cover'
-//                   className='h-16 w-16 object-contain'
-//                 />
-//               </Link>
-//               <Link
-//                 className='text-slate-700 font-semibold  hover:underline truncate flex-1'
-//                 to={`/listing/${listing._id}`}
-//               >
-//                 <p>{listing.name}</p>
-//               </Link>
-  
-//               <div className='flex flex-col item-center'>
-//                 <button
-//                   onClick={() => handleListingDelete(listing._id)}
-//                   className='text-red-700 uppercase'
-//                 >
-//                   Delete
-//                 </button>
-//                 <Link to={`/update-listing/${listing._id}`}>
-//                   <button className='text-green-700 uppercase'>Edit</button>
-//                 </Link>
-//               </div>
-//             </div>
-//           ))}
-//         </div>}
-//     </div>
-//   );
-// }
-
-
