@@ -72,17 +72,17 @@ export default function Header() {
 
           <form onSubmit={handleSubmit} className="hidden md:flex items-center flex-1 max-w-md mx-8">
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text--400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
                 placeholder="Search properties, locations..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-black-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-slate-50 hover:bg-white"
+                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-black-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-slate-50 hover:bg-white placeholder:text-slate-400 text-gray-800"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               <button
                 type="submit"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white p-1.5 rounded-md hover:bg-blue-700 transition-colors"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-pink-500 text-white p-1.5 rounded-md hover:bg-pink-700 transition-colors"
               >
                 <Search className="w-4 h-4" />
               </button>
@@ -167,7 +167,7 @@ export default function Header() {
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <Link to="/sign-in" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                <Link to="/sign-in" className="text-slate-900 hover:text-blue-600 font-medium transition-colors">
                   Sign In
                 </Link>
                 <Link
