@@ -1,5 +1,5 @@
 "use client"
-
+import { MdCurrencyRupee } from "react-icons/md";
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -412,17 +412,18 @@ export default function CreateListing() {
                 {/* Pricing */}
                 <div className="space-y-6">
                   <h3 className="text-lg font-semibold text-slate-800">
-                    <DollarSign className="w-5 h-5 inline mr-1" />
+                    <MdCurrencyRupee className="w-5 h-5 inline mr-1" />
                     Pricing
                   </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                      <label htmlFor="regularPrice" className="block text-sm font-medium text-slate-700 mb-2">
-                        Regular Price *
-                        {formData.type === "rent" && <span className="text-slate-500"> (per month)</span>}
-                      </label>
-                      <div className="relative">
-                        <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                <label htmlFor="regularPrice" className="block text-sm font-medium text-slate-700 mb-2">
+                Regular Price *
+                {formData.type === "rent" && <span className="text-slate-500"> (per month)</span>}
+                </label>
+                <div className="relative">
+                      <MdCurrencyRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                         <input
                           type="number"
                           id="regularPrice"
