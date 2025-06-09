@@ -25,6 +25,8 @@ import {
   CheckCircle,
   Loader2,
   Shield,
+  Clock,
+  XCircle,
 } from "lucide-react"
 
 export default function Profile() {
@@ -418,14 +420,34 @@ export default function Profile() {
                               alt="listing cover"
                               className="h-full w-full object-cover"
                             />
-                          </Link>
-                          <div className="p-4 flex-1 flex flex-col">
-                            <Link
-                              className="text-slate-800 font-semibold text-lg hover:text-pink-600 transition-colors mb-2 line-clamp-1"
-                              to={`/listing/${listing._id}`}
-                            >
-                              {listing.name}
-                            </Link>
+                        </Link>
+                           <div className="p-4 flex-1 flex flex-col">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Link
+                                className="text-slate-800 font-semibold text-lg hover:text-pink-600 transition-colors line-clamp-1"
+                                to={`/listing/${listing._id}`}
+                              >
+                                {listing.name}
+                              </Link>
+                              {listing.approvalStatus === 'pending' && (
+                                <span className="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full flex items-center gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  Pending Approval
+                                </span>
+                              )}
+                              {listing.approvalStatus === 'approved' && (
+                                <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full flex items-center gap-1">
+                                  <CheckCircle className="h-3 w-3" />
+                                  Approved
+                                </span>
+                              )}
+                              {listing.approvalStatus === 'rejected' && (
+                                <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full flex items-center gap-1">
+                                  <XCircle className="h-3 w-3" />
+                                  Rejected
+                                </span>
+                              )}
+                            </div>
                             <p className="text-slate-500 text-sm mb-3 line-clamp-2">{listing.description}</p>
                             <div className="mt-auto flex items-center justify-between">
                               <span className="text-pink-600 font-semibold">

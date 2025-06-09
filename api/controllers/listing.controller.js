@@ -4,7 +4,9 @@ import { errorHandler } from '../utils/error.js';
 export const createListing = async (req, res, next) => {
   try {
     // Check if listings require approval (could be stored in environment variable or settings collection)
-    const requiresApproval = process.env.REQUIRES_LISTING_APPROVAL !== 'false';
+    console.log('REQUIRES_LISTING_APPROVAL env var:', process.env.REQUIRES_LISTING_APPROVAL);
+    const requiresApproval = process.env.REQUIRES_LISTING_APPROVAL === 'true';
+    console.log('requiresApproval value:', requiresApproval);
     
     // Create listing with appropriate approval status
     const listingData = {
@@ -13,6 +15,7 @@ export const createListing = async (req, res, next) => {
       requiresApproval
     };
     
+    console.log('Creating listing with approval status:', listingData.approvalStatus);
     const listing = await Listing.create(listingData);
     
     return res.status(201).json({
@@ -109,6 +112,12 @@ export const getListings = async(req,res,next)=>{
     // Only show approved listings to regular users
     // If the user is an admin (checked in the request), show all listings
     const isAdmin = req.query.isAdmin === 'true';
+    console.log('isAdmin in getListings:', isAdmin);
+    
+    // Check if listings require approval
+    const requiresApproval = process.env.REQUIRES_LISTING_APPROVAL === 'true';
+    console.log('REQUIRES_LISTING_APPROVAL in getListings:', process.env.REQUIRES_LISTING_APPROVAL);
+    console.log('requiresApproval value in getListings:', requiresApproval);
     
     const query = {
       name: {$regex: searchTerm, $options: 'i'},
@@ -118,9 +127,12 @@ export const getListings = async(req,res,next)=>{
       type,
     };
     
-    // Only add approval filter for non-admin users
-    if (!isAdmin) {
+    // Only add approval filter for non-admin users and if approval is required
+    if (!isAdmin && requiresApproval) {
       query.approvalStatus = 'approved';
+      console.log('Filtering listings by approval status: approved');
+    } else {
+      console.log('Not filtering listings by approval status');
     }
     
     const listings = await Listing.find(query)
