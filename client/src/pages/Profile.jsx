@@ -11,8 +11,7 @@ import {
   deleteUserSuccess,
   signOut,
 } from "../redux/user/userSlice"
-import { useNavigate } from "react-router-dom"
-import { Link } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import {
   User,
   Camera,
@@ -62,35 +61,44 @@ export default function Profile() {
     if (file) {
       handleFileUpload(file)
     }
+    // eslint-disable-next-line
   }, [file])
 
+  // Secure Cloudinary upload using Vite env variables
   const handleFileUpload = async (file) => {
     setIsUploadingAvatar(true)
+    setFilePerc(0)
+    setFileUploadError(false)
     const formDataUpload = new FormData()
     formDataUpload.append("file", file)
-    formDataUpload.append("upload_preset", "my_unsigned")
+    formDataUpload.append(
+      "upload_preset",
+      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+    )
+    formDataUpload.append(
+      "cloud_name",
+      import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+    )
 
     try {
-      const res = await fetch("https://api.cloudinary.com/v1_1/duvqbiq0s/image/upload", {
-        method: "POST",
-        body: formDataUpload,
-      })
-
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: formDataUpload,
+        }
+      )
       const data = await res.json()
-
       if (data.secure_url) {
         const newFormData = { ...formData, avatar: data.secure_url }
         setFormData(newFormData)
         setFilePerc(100)
         setFileUploadError(false)
-
-        // Auto-update profile with new avatar
         await updateProfileWithAvatar(data.secure_url)
       } else {
         throw new Error(data.error?.message || "Image upload failed")
       }
     } catch (error) {
-      console.error("Upload error:", error)
       setFileUploadError(true)
       setFilePerc(0)
     } finally {
@@ -126,10 +134,10 @@ export default function Profile() {
   const handleRemoveAvatar = async () => {
     try {
       setIsUploadingAvatar(true)
+      setFilePerc(0)
+      setFileUploadError(false)
       const newFormData = { ...formData, avatar: "" }
       setFormData(newFormData)
-
-      // Auto-update profile to remove avatar
       dispatch(updateUserStart())
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "POST",
@@ -223,7 +231,6 @@ export default function Profile() {
       dispatch(signOut())
       navigate("/sign-in", { replace: true })
     } catch (error) {
-      console.error("Sign out failed:", error)
       dispatch(signOut())
       navigate("/sign-in", { replace: true })
     }
@@ -238,7 +245,6 @@ export default function Profile() {
         setShowListingsError(true)
         return
       }
-
       setUserListings(data)
       setShowListings(true)
       setActiveTab("listings")
@@ -254,14 +260,10 @@ export default function Profile() {
       })
       const data = await res.json()
       if (data.success === false) {
-        console.log(data.message)
         return
       }
-
       setUserListings((prev) => prev.filter((listing) => listing._id !== listingId))
-    } catch (error) {
-      console.log(error.message)
-    }
+    } catch (error) {}
   }
 
   const getStatusIcon = (status) => {
@@ -317,16 +319,15 @@ export default function Profile() {
                     <User className="h-14 w-14 text-white/70" />
                   )}
                 </div>
-
                 {/* Camera Icon - Functional */}
                 <button
                   onClick={() => fileRef.current.click()}
                   className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg hover:bg-slate-100 transition-colors"
                   disabled={isUploadingAvatar}
+                  title="Change profile picture"
                 >
                   <Camera className="h-4 w-4 text-pink-600" />
                 </button>
-
                 {/* Remove Avatar Button */}
                 {formData.avatar && (
                   <button
@@ -338,10 +339,14 @@ export default function Profile() {
                     <X className="h-3 w-3 text-white" />
                   </button>
                 )}
-
-                <input onChange={(e) => setFile(e.target.files[0])} type="file" ref={fileRef} hidden accept="image/*" />
+                <input
+                  onChange={(e) => setFile(e.target.files[0])}
+                  type="file"
+                  ref={fileRef}
+                  hidden
+                  accept="image/*"
+                />
               </div>
-
               <div className="text-center md:text-left">
                 <h1 className="text-3xl font-bold">{currentUser?.username || "User"}</h1>
                 <p className="text-pink-100">{currentUser?.email}</p>
@@ -362,7 +367,6 @@ export default function Profile() {
                   </div>
                 ) : null}
               </div>
-
               <div className="md:ml-auto flex gap-3">
                 <button
                   onClick={handleSignOut}
@@ -381,7 +385,6 @@ export default function Profile() {
               </div>
             </div>
           </div>
-
           {/* Tab Navigation */}
           <div className="border-b">
             <div className="flex overflow-x-auto">
@@ -428,7 +431,6 @@ export default function Profile() {
               </button>
             </div>
           </div>
-
           {/* Content Area */}
           <div className="p-6">
             {activeTab === "profile" && (
@@ -449,7 +451,6 @@ export default function Profile() {
                         className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                       />
                     </div>
-
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
                         Email Address
@@ -463,7 +464,6 @@ export default function Profile() {
                         className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                       />
                     </div>
-
                     <div>
                       <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
                         Password
@@ -478,14 +478,12 @@ export default function Profile() {
                       />
                     </div>
                   </div>
-
                   {error && (
                     <div className="bg-red-50 text-red-700 p-4 rounded-lg flex items-start gap-3">
                       <AlertCircle className="h-5 w-5 mt-0.5" />
                       <span>{error}</span>
                     </div>
                   )}
-
                   <div className="flex justify-end">
                     <button
                       disabled={loading}
@@ -508,7 +506,6 @@ export default function Profile() {
                 </form>
               </div>
             )}
-
             {activeTab === "listings" && (
               <div>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
@@ -521,7 +518,6 @@ export default function Profile() {
                     Add New Listing
                   </Link>
                 </div>
-
                 {/* Filter Tabs */}
                 <div className="flex flex-wrap gap-2 mb-6 p-1 bg-slate-100 rounded-lg">
                   {[
@@ -547,7 +543,6 @@ export default function Profile() {
                     </button>
                   ))}
                 </div>
-
                 {showListingsError ? (
                   <div className="bg-red-50 text-red-700 p-4 rounded-lg flex items-start gap-3">
                     <AlertCircle className="h-5 w-5 mt-0.5" />
@@ -577,7 +572,6 @@ export default function Profile() {
                                 {listing.name}
                               </Link>
                             </div>
-
                             {/* Enhanced Status Badge */}
                             <div className="mb-3">
                               <span
@@ -592,7 +586,6 @@ export default function Profile() {
                                   "Pending Approval"}
                               </span>
                             </div>
-
                             <p className="text-slate-500 text-sm mb-3 line-clamp-2">{listing.description}</p>
                             <div className="mt-auto flex items-center justify-between">
                               <span className="text-pink-600 font-semibold">
@@ -645,18 +638,15 @@ export default function Profile() {
                 )}
               </div>
             )}
-
             {activeTab === "security" && (
               <div className="max-w-2xl mx-auto">
                 <h2 className="text-2xl font-semibold mb-6 text-slate-800">Account Security</h2>
-
                 <div className="space-y-6">
                   <div className="bg-slate-50 p-6 rounded-lg border border-slate-200">
                     <h3 className="text-lg font-medium text-slate-800 mb-4">Danger Zone</h3>
                     <p className="text-slate-600 mb-6">
                       Permanently delete your account and all of your content. This action cannot be undone.
                     </p>
-
                     {showDeleteConfirm ? (
                       <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                         <h4 className="text-red-700 font-medium mb-2">Are you absolutely sure?</h4>

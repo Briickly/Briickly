@@ -41,7 +41,28 @@ export default function UpdateListing() {
     };
 
     fetchListing();
+    // eslint-disable-next-line
   }, []);
+
+  // Secure Cloudinary upload using Vite env variables
+  const uploadToCloudinary = async (file) => {
+    return new Promise((resolve, reject) => {
+      const data = new FormData();
+      data.append('file', file);
+      data.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+
+      fetch(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: data,
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => resolve(data.secure_url))
+        .catch((err) => reject(err));
+    });
+  };
 
   const handleImageSubmit = async () => {
     if (files.length > 0 && files.length + formData.imageUrls.length <= 6) {
@@ -65,23 +86,6 @@ export default function UpdateListing() {
     } else {
       setImageUploadError('You can only upload 6 images per listing');
     }
-  };
-
-  const uploadToCloudinary = async (file) => {
-    return new Promise((resolve, reject) => {
-      const data = new FormData();
-      data.append('file', file);
-      data.append('upload_preset', 'my_unsigned');
-      data.append('cloud_name', 'duvqbiq0s');
-
-      fetch('https://api.cloudinary.com/v1_1/duvqbiq0s/image/upload', {
-        method: 'POST',
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => resolve(data.secure_url))
-        .catch((err) => reject(err));
-    });
   };
 
   const handleRemoveImage = (index) => {
@@ -255,7 +259,6 @@ export default function UpdateListing() {
             )}
           </div>
         </div>
-
         <div className='flex flex-col flex-1 gap-4'>
           <p className='font-semibold'>
             Images:
@@ -316,4 +319,3 @@ export default function UpdateListing() {
     </main>
   );
 }
-
