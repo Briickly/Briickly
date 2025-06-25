@@ -49,10 +49,10 @@ export default function SignIn() {
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 mb-6">
-            <Home className="w-6 h-6" />
+          {/* <Link to="/" className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700 mb-6"> */}
+            {/* <Home className="w-6 h-6" />
             <span className="text-xl font-bold">Briickly</span>
-          </Link>
+          </Link> */}
           <h1 className="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h1>
           <p className="text-slate-600">Sign in to your account to continue</p>
         </div>
@@ -70,7 +70,7 @@ export default function SignIn() {
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all"
                   id="email"
                   onChange={handleChange}
                   required
@@ -88,7 +88,7 @@ export default function SignIn() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  className="w-full pl-10 pr-12 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-12 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all"
                   id="password"
                   onChange={handleChange}
                   required
@@ -115,7 +115,7 @@ export default function SignIn() {
             <button
               disabled={loading}
               type="submit"
-              className="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-pink-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-pink-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -141,7 +141,7 @@ export default function SignIn() {
             </div>
 
             {/* OAuth - Centered */}
-            <div className="flex justify-center w-full">
+            <div className="w-full">
               <OAuth />
             </div>
           </form>
@@ -150,7 +150,7 @@ export default function SignIn() {
           <div className="mt-8 text-center">
             <p className="text-slate-600">
               Don't have an account?{" "}
-              <Link to="/sign-up" className="text-red-600 hover:text-red-700 font-semibold">
+              <Link to="/sign-up" className="text-pink-600 hover:text-pink-700 font-semibold">
                 Sign up
               </Link>
             </p>
@@ -161,11 +161,11 @@ export default function SignIn() {
         <div className="text-center mt-8">
           <p className="text-sm text-slate-500">
             By signing in, you agree to our{" "}
-            <Link to="/terms" className="text-red-600 hover:text-red-700">
+            <Link to="/terms" className="text-pink-600 hover:text-pink-700">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link to="/privacy" className="text-red-600 hover:text-red-700">
+            <Link to="/privacy" className="text-pink-600 hover:text-pink-700">
               Privacy Policy
             </Link>
           </p>

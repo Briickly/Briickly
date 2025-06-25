@@ -32,7 +32,7 @@ export default function OAuth() {
     <button
   onClick={handleGoogleClick}
   type="button"
-  className="flex items-center justify-center gap-3 bg-white text-gray-700 font-semibold px-5 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 border border-gray-300"
+  className="w-full flex items-center justify-center gap-3 bg-white text-gray-700 font-semibold px-5 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 border border-gray-300"
 >
   <FcGoogle size={24} />
   Continue with Google

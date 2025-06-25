@@ -40,8 +40,8 @@ export default function Header() {
   }, [])
 
   const navLinks = [
-    { to: "/", label: "Home", icon: <Home className="w-4 h-4 text-pink-500" /> },
-    { to: "/about", label: "About", icon: <Info className="w-4 h-4 text-pink-500" /> },
+    { to: "/", label: "Home", icon: <Home className="w-4 h-4 text-pink-300" /> },
+    { to: "/about", label: "About", icon: <Info className="w-4 h-4 text-pink-300" /> },
   ]
 
   const handleSignOut = async () => {
@@ -167,7 +167,7 @@ export default function Header() {
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <Link to="/sign-in" className="text-slate-900 hover:text-blue-600 font-medium transition-colors">
+                <Link to="/sign-in" className="text-black hover:text-white font-medium transition-colors">
                   Sign In
                 </Link>
                 <Link
@@ -185,7 +185,7 @@ export default function Header() {
               e.stopPropagation()
               setIsMenuOpen(!isMenuOpen)
             }}
-            className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-slate-100 hover:text-gray-900 transition-colors"
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -203,7 +203,7 @@ export default function Header() {
             />
             <button
               type="submit"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-yellow-600 text-white p-1.5 rounded-md hover:bg-pink-700 transition-colors"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-pink-600 text-white p-1.5 rounded-md hover:bg-pink-700 transition-colors"
             >
               <Search className="w-4 h-4" />
             </button>
@@ -217,7 +217,7 @@ export default function Header() {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
+                  className="flex items-center gap-3 px-4 py-3 text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.icon}
@@ -282,7 +282,7 @@ export default function Header() {
                 <div className="border-t border-slate-200 pt-4 mt-4 space-y-2">
                   <Link
                     to="/sign-in"
-                    className="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
+                    className="block px-4 py-3 text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sign In

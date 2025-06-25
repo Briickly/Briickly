@@ -162,17 +162,17 @@ export default function Search() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <SearchIcon className="w-6 h-6 text-green-600" />
+              <SearchIcon className="w-6 h-6 text-pink-600" />
               <h1 className="text-2xl font-bold text-slate-800">Property Search</h1>
             </div>
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="md:hidden flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg font-medium"
+              className="md:hidden flex items-center gap-2 bg-pink-600 text-white px-4 py-2 rounded-lg font-medium"
             >
               <Filter className="w-4 h-4" />
               Filters
               {getActiveFiltersCount() > 0 && (
-                <span className="bg-white text-green-600 text-xs px-2 py-1 rounded-full font-bold">
+                <span className="bg-white text-pink-600 text-xs px-2 py-1 rounded-full font-bold">
                   {getActiveFiltersCount()}
                 </span>
               )}
@@ -191,11 +191,11 @@ export default function Search() {
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
-                <SlidersHorizontal className="w-5 h-5 text-green-600" />
+                <SlidersHorizontal className="w-5 h-5 text-pink-600" />
                 <h2 className="text-lg font-semibold text-slate-800">Filters</h2>
               </div>
               {getActiveFiltersCount() > 0 && (
-                <button onClick={clearFilters} className="text-sm text-green-600 hover:text-green-700 font-medium">
+                <button onClick={clearFilters} className="text-sm text-pink-600 hover:text-pink-700 font-medium">
                   Clear All
                 </button>
               )}
@@ -214,7 +214,7 @@ export default function Search() {
                     type="text"
                     id="searchTerm"
                     placeholder="Enter city, neighborhood, or address..."
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all"
                     value={sidebardata.searchTerm}
                     onChange={handleChange}
                   />
@@ -234,7 +234,7 @@ export default function Search() {
                       key={type.id}
                       className={`flex items-center p-3 rounded-lg border-2 cursor-pointer transition-all ${
                         sidebardata.type === type.id
-                          ? "border-green-500 bg-green-50 text-green-700"
+                          ? "border-pink-600 bg-pink-100 text-pink-700"
                           : "border-slate-200 hover:border-slate-300"
                       }`}
                     >
@@ -267,7 +267,7 @@ export default function Search() {
                       key={feature.id}
                       className={`flex items-center p-3 rounded-lg border-2 cursor-pointer transition-all ${
                         sidebardata[feature.id]
-                          ? "border-green-500 bg-green-50 text-green-700"
+                          ? "border-pink-600 bg-pink-100 text-pink-700"
                           : "border-slate-200 hover:border-slate-300"
                       }`}
                     >
@@ -295,7 +295,7 @@ export default function Search() {
                     onChange={handleChange}
                     defaultValue={"createdAt_desc"}
                     id="sort_order"
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all appearance-none bg-white"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all appearance-none bg-white"
                   >
                     <option value="regularPrice_desc">Price: High to Low</option>
                     <option value="regularPrice_asc">Price: Low to High</option>
@@ -309,7 +309,7 @@ export default function Search() {
               {/* Search Button */}
               <button
                 type="submit"
-                className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-pink-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-pink-700 transition-colors flex items-center justify-center gap-2"
               >
                 <SearchIcon className="w-5 h-5" />
                 Search Properties
@@ -336,7 +336,7 @@ export default function Search() {
               {getActiveFiltersCount() > 0 && (
                 <div className="hidden lg:flex items-center gap-2">
                   <span className="text-sm text-slate-600">Active filters:</span>
-                  <span className="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full font-medium">
+                  <span className="bg-pink-300 text-pink-700 text-sm px-3 py-1 rounded-full font-medium">
                     {getActiveFiltersCount()}
                   </span>
                 </div>
@@ -349,7 +349,7 @@ export default function Search() {
             {loading ? (
               <div className="flex items-center justify-center py-20">
                 <div className="text-center">
-                  <Loader2 className="w-12 h-12 text-green-600 animate-spin mx-auto mb-4" />
+                  <Loader2 className="w-12 h-12 text-pink-600 animate-spin mx-auto mb-4" />
                   <p className="text-xl text-slate-600">Searching properties...</p>
                 </div>
               </div>
@@ -364,7 +364,7 @@ export default function Search() {
                 </p>
                 <button
                   onClick={clearFilters}
-                  className="bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors"
+                  className="bg-pink-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-pink-700 transition-colors"
                 >
                   Clear Filters
                 </button>
@@ -385,7 +385,7 @@ export default function Search() {
                   <div className="text-center mt-12">
                     <button
                       onClick={onShowMoreClick}
-                      className="bg-white border-2 border-green-600 text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-green-50 transition-colors"
+                      className="bg-white border-2 border-pink-600 text-pink-600 px-8 py-3 rounded-lg font-semibold hover:bg-pink-150 transition-colors"
                     >
                       Load More Properties
                     </button>

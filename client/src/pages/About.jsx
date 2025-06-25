@@ -25,7 +25,7 @@ export default function About() {
       icon: <TrendingUp className="w-8 h-8 text-pink-600" />,
       title: "Innovation",
       description:
-        "Leveraging cutting-edge technology to provide smart search, AI-powered recommendations, and real-time market insights.",
+        "We use the latest tools to make property searching easier, with smart filters, useful suggestions, and current market trends.",
     },
     {
       icon: <Award className="w-8 h-8 text-pink-600" />,
@@ -36,25 +36,20 @@ export default function About() {
   ]
 
   const team = [
-    {
-      name: "Guransh Goyal",
-      role: "CEO & Founder",
-      image: "/placeholder.svg?height=200&width=200",
-      description: "15+ years in real estate technology",
-    },
-    {
-      name: "krishna Goyal",
-      role: "CTO",
-      image: "/placeholder.svg?height=200&width=200",
-      description: "Former tech lead at major proptech companies",
-    },
-    {
-      name: "Ayush Pandey",
-      role: "Head of Operations",
-      image: "/placeholder.svg?height=200&width=200",
-      description: "Expert in real estate operations and customer success",
-    },
-  ]
+  {
+    name: "Guransh Goyal",
+    image: "/Avatars/guransh.jpg",
+  },
+  {
+    name: "Krishna Goyal",
+    image: "/Avatars/krishna.jpg",
+  },
+  {
+    name: "Ayush Pandey",
+    image: "/Avatars/ayush.jpg",
+  },
+]
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -171,28 +166,24 @@ export default function About() {
         </div>
       </section>
 
-      {/* Story Section */}
-      <section className="py-20 bg-gradient-to-r from-pink-600 to-indigo-700 text-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-8">Our Story</h2>
-          <div className="space-y-6 text-lg leading-relaxed">
-            <p>
-              Founded in 2020, Briickly emerged from a simple observation: the real estate industry was ripe for
-              innovation. Our founders, having experienced the frustrations of traditional property transactions
-              firsthand, set out to create a better way.
-            </p>
-            <p>
-              What started as a small team with big dreams has grown into a comprehensive platform serving thousands of
-              users across the country. We've facilitated millions in property transactions and helped countless
-              families find their perfect homes.
-            </p>
-            <p>
-              Today, we continue to push boundaries, introducing new features and technologies that make real estate
-              more accessible, transparent, and efficient for everyone involved.
-            </p>
-          </div>
-        </div>
-      </section>
+{/* Story Section - Full Width */}
+<section className="py-20 px-6 sm:px-12 bg-gradient-to-r from-pink-600 to-indigo-700 text-white">
+  <div className="text-center">
+    <h2 className="text-4xl font-extrabold mb-10">Our Story</h2>
+    <div className="space-y-8 text-lg leading-8 sm:text-xl sm:leading-relaxed max-w-7xl mx-auto">
+      <p>
+        Briickly was created by a group of undergraduate students who saw how challenging it can be to find the right property online. What started as a college project quickly turned into a mission to make the home-search experience simpler and more helpful.
+      </p>
+      <p>
+        Since then, we’ve been working hard to build a platform that’s easy to use, reliable, and centered around what people actually need when looking for a home. While we’re still growing, we’re committed to improving every part of the experience.
+      </p>
+      <p>
+        Our journey with Briickly is just beginning, and we’re focused on making property browsing easier for people — while constantly learning and making the platform better every day.
+      </p>
+    </div>
+  </div>
+</section>
+
 
       {/* CTA Section */}
       <section className="py-20 px-4 max-w-6xl mx-auto text-center">

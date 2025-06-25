@@ -7,7 +7,7 @@ export default function Privacy() {
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-red-600 hover:text-red-700">
+          <Link to="/" className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700">
             <Home className="w-6 h-6" />
             <span className="text-xl font-bold">Briickly</span>
           </Link>

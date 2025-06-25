@@ -76,10 +76,10 @@ export default function SignUp() {
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 mb-6">
+          {/* <Link to="/" className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700 mb-6">
             <Home className="w-6 h-6" />
             <span className="text-xl font-bold">Briickly</span>
-          </Link>
+          </Link> */}
           <h1 className="text-3xl font-bold text-slate-800 mb-2">Create Account</h1>
           <p className="text-slate-600">Join Briickly to find your perfect property</p>
         </div>
@@ -97,7 +97,7 @@ export default function SignUp() {
                 <input
                   type="text"
                   placeholder="Choose a username"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all"
                   id="username"
                   onChange={handleChange}
                   required
@@ -115,7 +115,7 @@ export default function SignUp() {
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all"
                   id="email"
                   onChange={handleChange}
                   required
@@ -133,7 +133,7 @@ export default function SignUp() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Create a strong password"
-                  className="w-full pl-10 pr-12 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-12 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all"
                   id="password"
                   onChange={handleChange}
                   required
@@ -180,7 +180,7 @@ export default function SignUp() {
             <button
               disabled={loading}
               type="submit"
-              className="w-full bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-pink-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-pink-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -215,7 +215,7 @@ export default function SignUp() {
           <div className="mt-8 text-center">
             <p className="text-slate-600">
               Already have an account?{" "}
-              <Link to="/sign-in" className="text-orange-600 hover:text-orange-700 font-semibold">
+              <Link to="/sign-in" className="text-pink-600 hover:text-pink-700 font-semibold">
                 Sign in
               </Link>
             </p>
@@ -227,11 +227,11 @@ export default function SignUp() {
         <div className="text-center mt-8">
           <p className="text-sm text-slate-500">
             By creating an account, you agree to our{" "}
-            <Link to="/terms" className="text-orange-600 hover:text-orange-700">
+            <Link to="/terms" className="text-pink-600 hover:text-pink-700">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link to="/privacy" className="text-orange-600 hover:text-orange-700">
+            <Link to="/privacy" className="text-pink-600 hover:text-pink-700">
               Privacy Policy
             </Link>
           </p>
