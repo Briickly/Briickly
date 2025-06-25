@@ -235,8 +235,3 @@ Please include the following:
 | Ayush Pandey  | 20233331         | B.Tech CSE |
 | Krishna Goyal | 20233172         | B.Tech CSE |
 
----
-
-## 📄 License
-
-This project is licensed under the *MIT License*.
