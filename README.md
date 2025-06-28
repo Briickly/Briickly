@@ -233,5 +233,5 @@ Please include the following:
 | ------------- | ---------------- | ---------- |
 | Guransh Goyal | 20233132         | B.Tech CSE |
 | Ayush Pandey  | 20233331         | B.Tech CSE |
-| Krishna Goyal | 20233172         | B.Tech CSE |
+| Krishna Goyal | 20233169         | B.Tech CSE |
 
